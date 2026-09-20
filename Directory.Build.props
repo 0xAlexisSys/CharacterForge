@@ -1,0 +1,16 @@
+<Project>
+    <PropertyGroup>
+        <SolutionDirectory>$(MSBuildThisFileDirectory)</SolutionDirectory>
+        <SourceDirectory>$(SolutionDirectory)src/</SourceDirectory>
+
+        <LangVersion>preview</LangVersion>
+        <Nullable>enable</Nullable>
+        <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+        <NoWarn>$(NoWarn);IDE0130</NoWarn>
+        <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+        <BaseIntermediateOutputPath>$(MSBuildProjectDirectory)/.build/obj/</BaseIntermediateOutputPath>
+        <BaseOutputPath>$(MSBuildProjectDirectory)/.build/bin/</BaseOutputPath>
+        <MSBuildProjectExtensionsPath>$(BaseIntermediateOutputPath)</MSBuildProjectExtensionsPath>
+        <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    </PropertyGroup>
+</Project>

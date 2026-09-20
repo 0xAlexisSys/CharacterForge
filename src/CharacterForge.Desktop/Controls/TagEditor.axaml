@@ -1,0 +1,71 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:controls="using:CharacterForge.Desktop.Controls"
+                    xmlns:icons="using:Material.Icons.Avalonia">
+    <Design.PreviewWith>
+        <controls:TagEditor Width="960.0"
+                            Height="540.0"/>
+    </Design.PreviewWith>
+
+    <ControlTheme x:Key="{x:Type controls:TagEditor}" TargetType="controls:TagEditor">
+        <Setter Property="Template">
+            <ControlTemplate>
+                <ScrollViewer Name="PART_ItemsScrollViewer"
+                              HorizontalScrollBarVisibility="Disabled"
+                              VerticalScrollBarVisibility="Auto">
+                    <WrapPanel Name="PART_ItemsPanel"
+                               Orientation="Horizontal"
+                               ItemSpacing="4.0"
+                               LineSpacing="4.0">
+                        <WrapPanel.Styles>
+                            <Style Selector="Border.itemChip">
+                                <Setter Property="Background" Value="{DynamicResource TagEditorItemChipBackground}"/>
+                                <Setter Property="BorderBrush" Value="{DynamicResource TagEditorItemChipBorderBrush}"/>
+                                <Setter Property="BorderThickness" Value="1.0"/>
+                                <Setter Property="CornerRadius" Value="12.0"/>
+                                <Setter Property="Height" Value="24.0"/>
+                                <Setter Property="Padding" Value="8.0,2.0"/>
+
+                                <Style Selector="^ > StackPanel">
+                                    <Setter Property="Orientation" Value="Horizontal"/>
+                                    <Setter Property="Spacing" Value="6.0"/>
+
+                                    <Style Selector="^ > TextBox">
+                                        <Setter Property="FontSize" Value="12.0"/>
+                                        <Setter Property="Foreground" Value="{DynamicResource TagEditorItemChipForeground}"/>
+                                        <Setter Property="VerticalAlignment" Value="Center"/>
+                                        <Setter Property="MinWidth" Value="0.0"/>
+                                        <Setter Property="MinHeight" Value="16.0"/>
+                                        <Setter Property="Padding" Value="2.0,0.0"/>
+
+                                        <Style Selector="^:disabled /template/ Border#PART_BorderElement">
+                                            <Setter Property="Background" Value="Transparent"/>
+                                        </Style>
+
+                                        <Style Selector="^.restricted">
+                                            <Setter Property="Foreground" Value="{DynamicResource TagEditorItemRestrictedForeground}"/>
+                                        </Style>
+                                    </Style>
+                                </Style>
+                            </Style>
+
+                            <Style Selector="Button#PART_AddItemButton:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+                                <Setter Property="Background" Value="{DynamicResource TagEditorAddButtonBackgroundPointerOver}"/>
+                            </Style>
+                        </WrapPanel.Styles>
+
+                        <Button Name="PART_AddItemButton"
+                                Content="{icons:MaterialIconExt Kind=Plus, IconSize=16.0}"
+                                Foreground="{DynamicResource TagEditorAddButtonForeground}"
+                                Background="{DynamicResource TagEditorAddButtonBackground}"
+                                BorderBrush="{DynamicResource TagEditorAddButtonBorderBrush}"
+                                CornerRadius="12.0"
+                                Width="24.0"
+                                Height="24.0"
+                                Padding="0.0"/>
+                    </WrapPanel>
+                </ScrollViewer>
+            </ControlTemplate>
+        </Setter>
+    </ControlTheme>
+</ResourceDictionary>

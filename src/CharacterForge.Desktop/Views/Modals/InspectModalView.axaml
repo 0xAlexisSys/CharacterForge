@@ -1,0 +1,59 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:viewModels="using:CharacterForge.Desktop.ViewModels"
+             x:Class="CharacterForge.Desktop.Views.InspectModalView"
+             x:DataType="viewModels:InspectModalViewModel">
+    <StackPanel Classes="modal">
+        <TextBlock Classes="header"
+                   Text="Character Card"/>
+        <Separator/>
+        <Border Background="#FF1D1F21"
+                BorderBrush="#FF373B41"
+                BorderThickness="1.0"
+                CornerRadius="{DynamicResource ControlCornerRadius}">
+            <ScrollViewer HorizontalScrollBarVisibility="Auto"
+                          VerticalScrollBarVisibility="Auto"
+                          MinWidth="640.0"
+                          MaxWidth="640.0"
+                          MinHeight="480.0"
+                          MaxHeight="480.0">
+                <SelectableTextBlock Text="{Binding PreviewText}"
+                                     FontFamily="{StaticResource UbuntuSansMonoFont}"
+                                     FontWeight="Regular"
+                                     FontSize="13.0"
+                                     Padding="8.0"
+                                     Foreground="#FFB5BD68"/>
+            </ScrollViewer>
+        </Border>
+        <Separator/>
+        <DockPanel Classes="footer">
+            <Button Classes="secondary"
+                    Content="Close"
+                    Command="{Binding CloseCommand}"/>
+
+            <UniformGrid Columns="3"
+                         VerticalAlignment="Bottom">
+                <StackPanel Orientation="Horizontal"
+                            Spacing="3.0">
+                    <TextBlock Text="Total Est. Tokens:"
+                               FontWeight="Regular"/>
+                    <TextBlock Text="{Binding TotalTokenCount}"/>
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal"
+                            Spacing="3.0">
+                    <TextBlock Text="Standard Greetings:"
+                               FontWeight="Regular"/>
+                    <TextBlock Text="{Binding StandardGreetingCount}"/>
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal"
+                            Spacing="3.0">
+                    <TextBlock Text="Group-Only Greetings:"
+                               FontWeight="Regular"/>
+                    <TextBlock Text="{Binding GroupOnlyGreetingCount}"/>
+                </StackPanel>
+            </UniformGrid>
+        </DockPanel>
+    </StackPanel>
+</UserControl>

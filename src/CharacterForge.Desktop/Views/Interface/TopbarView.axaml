@@ -1,0 +1,35 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:viewModels="using:CharacterForge.Desktop.ViewModels"
+             xmlns:icons="using:Material.Icons.Avalonia"
+             x:Class="CharacterForge.Desktop.Views.TopbarView"
+             x:DataType="viewModels:TopbarViewModel">
+    <UserControl.Styles>
+        <Style Selector="Button.icon">
+            <Setter Property="Width" Value="32.0"/>
+            <Setter Property="Height" Value="32.0"/>
+
+            <Style Selector="^ icons|MaterialIcon">
+                <Setter Property="IconSize" Value="20.0"/>
+            </Style>
+        </Style>
+    </UserControl.Styles>
+
+    <Border Background="{DynamicResource SurfaceElevatedBackgroundBrush}"
+            Padding="4.0">
+        <UniformGrid Columns="2">
+            <StackPanel Orientation="Horizontal"
+                        Spacing="4.0"
+                        HorizontalAlignment="Left">
+                <Button ToolTip.Tip="Open a Character Card"
+                        Classes="icon"
+                        Content="{icons:MaterialIconExt Kind=FileImportOutline}"
+                        Command="{Binding OpenCharacterCardCommand}"/>
+                <Button ToolTip.Tip="Export Character Card"
+                        Classes="icon"
+                        Content="{icons:MaterialIconExt Kind=ExportVariant}"
+                        Command="{Binding ExportCharacterCardCommand}"/>
+            </StackPanel>
+        </UniformGrid>
+    </Border>
+</UserControl>

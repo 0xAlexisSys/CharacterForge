@@ -1,0 +1,3 @@
+root ::= "```plaintext\n" content "\n```"
+content ::= line ("\n" line)*
+line ::= [^\r\n<]*

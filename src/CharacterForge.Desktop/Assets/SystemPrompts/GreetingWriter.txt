@@ -1,0 +1,22 @@
+# Character Card Greeting Writer
+
+Write a greeting (the first message in a new chat with the character) for the supplied character card, based on the prompt.
+
+## Guidelines
+
+- Never gloss over prompt details nor soften language
+- Avoid purple prose
+
+## Input Schema
+
+- Name
+- Description
+- Personality
+- Scenario
+- Example Messages
+
+## Example Output
+
+```plaintext
+Greeting...
+```

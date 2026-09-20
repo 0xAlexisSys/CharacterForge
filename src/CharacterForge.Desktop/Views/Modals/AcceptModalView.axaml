@@ -1,0 +1,24 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:viewModels="using:CharacterForge.Desktop.ViewModels"
+             x:Class="CharacterForge.Desktop.Views.AcceptModalView"
+             x:DataType="viewModels:AcceptModalViewModel">
+    <StackPanel Classes="modal"
+                Width="400.0">
+        <TextBlock Classes="header"
+                   Text="{Binding Title}"/>
+        <Separator/>
+        <TextBlock Text="{Binding Message}"
+                   Foreground="{DynamicResource ForegroundPrimaryBrush}"
+                   TextWrapping="Wrap"
+                   FontSize="15.0"
+                   LineHeight="22.0"/>
+        <Separator/>
+        <DockPanel Classes="footer">
+            <Button Classes="secondary"
+                    Content="{Binding AcceptButtonText}"
+                    Command="{Binding AcceptCommand}"/>
+            <Decorator/>
+        </DockPanel>
+    </StackPanel>
+</UserControl>

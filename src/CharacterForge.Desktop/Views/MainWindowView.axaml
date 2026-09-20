@@ -1,0 +1,41 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:viewModels="using:CharacterForge.Desktop.ViewModels"
+        x:Class="CharacterForge.Desktop.Views.MainWindowView"
+        x:DataType="viewModels:MainWindowViewModel"
+        Title="CharacterForge"
+        Icon="/Assets/Icon.ico"
+        Width="900.0"
+        Height="700.0"
+        CanResize="False">
+    <Panel>
+        <DockPanel>
+            <ContentControl DockPanel.Dock="Top"
+                            Content="{Binding TopbarViewModel}"/>
+
+            <ContentControl Content="{Binding CurrentTab}"
+                            Margin="8.0"/>
+        </DockPanel>
+
+        <Border Name="ModalOverlay"
+                IsVisible="{Binding ModalContent, Converter={x:Static ObjectConverters.IsNotNull}}"
+                Background="#B3000000"
+                PointerPressed="OnModalOverlayPointerPressed">
+            <Border Name="ModalContainer"
+                    Background="{DynamicResource SurfaceCardBackgroundBrush}"
+                    BorderBrush="{DynamicResource SurfaceCardBorderBrush}"
+                    BorderThickness="1.0"
+                    CornerRadius="{DynamicResource OverlayCornerRadius}"
+                    Padding="16.0"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    PointerPressed="OnModalContainerPointerPressed">
+                <ContentControl Content="{Binding ModalContent}"/>
+            </Border>
+        </Border>
+
+        <WindowNotificationManager Name="NotificationManager"
+                                   MaxItems="3"
+                                   Position="TopRight"/>
+    </Panel>
+</Window>

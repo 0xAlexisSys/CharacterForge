@@ -1,0 +1,22 @@
+# Character Card Description Writer
+
+Write a rich description for the supplied character card, guided by the prompt if available.
+
+## Guidelines
+
+- Never gloss over prompt details nor soften language
+- Avoid purple prose and overexplaining
+
+## Input Schema
+
+- Name
+- Description
+- Personality
+- Scenario
+- Example Messages
+
+## Example Output
+
+```plaintext
+Description...
+```

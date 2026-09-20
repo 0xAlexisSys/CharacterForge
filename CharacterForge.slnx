@@ -1,0 +1,15 @@
+<Solution>
+    <Folder Name="/root/">
+        <File Path="Directory.Build.props"/>
+        <File Path="Directory.Packages.props"/>
+        <File Path=".editorconfig"/>
+        <File Path="CharacterForge.sln.DotSettings"/>
+        <File Path=".gitattributes"/>
+        <File Path=".gitignore"/>
+    </Folder>
+
+    <Folder Name="/src/">
+        <Project Path="src/CharacterForge.Desktop/CharacterForge.Desktop.csproj"/>
+        <Project Path="src/CharacterForge.Infrastructure/CharacterForge.Infrastructure.csproj"/>
+    </Folder>
+</Solution>

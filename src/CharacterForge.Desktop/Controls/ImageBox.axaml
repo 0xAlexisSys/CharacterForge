@@ -1,0 +1,59 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:controls="using:CharacterForge.Desktop.Controls"
+                    xmlns:icons="using:Material.Icons.Avalonia">
+    <Design.PreviewWith>
+        <UniformGrid Columns="2"
+                     ColumnSpacing="32.0"
+                     Rows="2"
+                     RowSpacing="32.0">
+            <controls:ImageBox Size="300.0"
+                               Stretch="None"/>
+            <controls:ImageBox Size="300.0"
+                               Stretch="Fill"/>
+            <controls:ImageBox Size="300.0"
+                               Stretch="Uniform"/>
+            <controls:ImageBox Size="300.0"
+                               Stretch="UniformToFill"/>
+        </UniformGrid>
+    </Design.PreviewWith>
+
+    <ControlTheme x:Key="{x:Type controls:ImageBox}" TargetType="controls:ImageBox">
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Border Name="PART_SourceBorder"
+                        Background="{DynamicResource ImageBoxBackground}"
+                        BorderBrush="{DynamicResource ImageBoxBorderBrush}"
+                        BorderThickness="{DynamicResource ImageBoxBorderThickness}"
+                        CornerRadius="{DynamicResource ControlCornerRadius}"
+                        Width="{TemplateBinding Size}"
+                        Height="{TemplateBinding Size}">
+                    <Border.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Name="PART_ChooseContextMenuItem"
+                                      Header="Choose..."
+                                      Icon="{icons:MaterialIconExt Kind='ImageAdd'}"/>
+                            <MenuItem Name="PART_ClearContextMenuItem"
+                                      IsEnabled="{TemplateBinding Source, Converter={x:Static ObjectConverters.IsNotNull}}"
+                                      Header="Clear"
+                                      Icon="{icons:MaterialIconExt Kind='Clear'}"/>
+                        </ContextMenu>
+                    </Border.ContextMenu>
+
+                    <Panel>
+                        <Image IsVisible="{TemplateBinding Source, Converter={x:Static ObjectConverters.IsNull}}"
+                               Source="/Assets/NoImage.png"
+                               Stretch="Fill"
+                               MaxWidth="{TemplateBinding Size}"
+                               MaxHeight="{TemplateBinding Size}"/>
+
+                        <Image Source="{TemplateBinding Source}"
+                               Stretch="{TemplateBinding Stretch}"
+                               MaxWidth="{TemplateBinding Size}"
+                               MaxHeight="{TemplateBinding Size}"/>
+                    </Panel>
+                </Border>
+            </ControlTemplate>
+        </Setter>
+    </ControlTheme>
+</ResourceDictionary>

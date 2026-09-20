@@ -1,0 +1,25 @@
+<Project>
+    <PropertyGroup>
+        <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageVersion Include="Avalonia" Version="12.1.2"/>
+        <PackageVersion Include="Avalonia.Desktop" Version="12.1.2"/>
+        <PackageVersion Include="AvaDiagnostics12" Version="12.1.2"/>
+        <PackageVersion Include="Avalonia.Fonts.Inter" Version="12.1.2"/>
+        <PackageVersion Include="Avalonia.Themes.Fluent" Version="12.1.2"/>
+        <PackageVersion Include="Material.Icons.Avalonia" Version="3.0.2"/>
+        <PackageVersion Include="CommunityToolkit.Mvvm" Version="8.4.2"/>
+        <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="10.0.12"/>
+        <PackageVersion Include="Microsoft.Bcl.Memory" Version="10.0.12"/> <!-- Implicit version 9.0.4 throws a NU1903 warning. -->
+        <PackageVersion Include="Microsoft.ML.Tokenizers" Version="2.0.0"/>
+        <PackageVersion Include="Microsoft.ML.Tokenizers.Data.O200kBase" Version="2.0.0"/>
+        <PackageVersion Include="Magick.NET-Q16-AnyCPU" Version="14.17.1"/>
+        <PackageVersion Include="JetBrains.Annotations" Version="2026.2.0"/>
+
+        <!-- Hot Reload -->
+        <PackageVersion Include="Avalonia.Markup.Xaml.Loader" Version="12.1.2"/>
+        <PackageVersion Include="HotAvalonia" Version="3.1.4"/>
+    </ItemGroup>
+</Project>

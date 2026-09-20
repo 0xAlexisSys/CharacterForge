@@ -1,0 +1,346 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:controls="using:CharacterForge.Desktop.Controls"
+             xmlns:viewModels="using:CharacterForge.Desktop.ViewModels"
+             xmlns:models="using:CharacterForge.Desktop.Models"
+             xmlns:icons="using:Material.Icons.Avalonia"
+             x:Class="CharacterForge.Desktop.Views.CharacterCardEditorView"
+             x:DataType="viewModels:CharacterCardEditorViewModel">
+    <StackPanel Orientation="Vertical">
+        <Border Background="{DynamicResource SurfaceElevatedBackgroundBrush}"
+                CornerRadius="{DynamicResource ControlCornerRadius}"
+                Padding="8.0">
+            <Grid ColumnDefinitions="Auto *"
+                  ColumnSpacing="16.0">
+                <controls:ImageBox Grid.Column="0"
+                                   Name="IconBox"
+                                   Source="{Binding Icon}"
+                                   Size="150.0"/>
+
+                <Grid Grid.Row="0"
+                      Grid.Column="1"
+                      RowDefinitions="Auto Auto"
+                      RowSpacing="16.0"
+                      ColumnDefinitions="* 0.5*"
+                      ColumnSpacing="16.0"
+                      VerticalAlignment="Center">
+                    <StackPanel Grid.Row="0"
+                                Grid.Column="0"
+                                Classes="field">
+                        <StackPanel Classes="header">
+                            <TextBlock Classes="label"
+                                       Text="Name"/>
+                            <TextBlock Classes="sublabel"
+                                       Text="{Binding NameTokenCountText}"/>
+                        </StackPanel>
+                        <TextBox Text="{Binding Name}"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="1"
+                                Grid.Column="0"
+                                Classes="field">
+                        <StackPanel Classes="header">
+                            <TextBlock Classes="label"
+                                       Text="Nickname"/>
+                            <TextBlock Classes="sublabel"
+                                       Text="{Binding NicknameTokenCountText}"/>
+                        </StackPanel>
+                        <TextBox Text="{Binding Nickname}"/>
+                    </StackPanel>
+
+                    <DockPanel Grid.Row="0"
+                               Grid.RowSpan="2"
+                               Grid.Column="1"
+                               HorizontalSpacing="16.0">
+                        <Separator DockPanel.Dock="Left"
+                                   Classes="vertical"
+                                   CornerRadius="2.0"
+                                   Width="4.0"/>
+
+                        <StackPanel DockPanel.Dock="Top"
+                                    Orientation="Vertical"
+                                    Spacing="8.0"
+                                    VerticalAlignment="Center">
+                            <Button Classes="secondary"
+                                    Content="{icons:MaterialIconTextExt Kind=Magnify, Text='Inspect'}"
+                                    HorizontalContentAlignment="Center"
+                                    HorizontalAlignment="Stretch"
+                                    Command="{Binding InspectCommand}"/>
+                            <Button Classes="danger"
+                                    Content="{icons:MaterialIconTextExt Kind=DeleteSweep, Text='Reset'}"
+                                    HorizontalContentAlignment="Center"
+                                    HorizontalAlignment="Stretch"
+                                    Command="{Binding ResetCommand}"/>
+                        </StackPanel>
+                    </DockPanel>
+                </Grid>
+            </Grid>
+        </Border>
+
+        <TabControl Margin="0.0"
+                    Padding="0.0">
+            <TabItem Header="Details">
+                <StackPanel Classes="editorTab">
+                    <StackPanel Classes="field">
+                        <DockPanel Classes="header">
+                            <Button ToolTip.Tip="Generate Description"
+                                    IsEnabled="{Binding CanGenerateDescription}"
+                                    Classes="icon iconMagic"
+                                    Content="{icons:MaterialIconExt Kind=Magic}"
+                                    Command="{Binding OpenGenerateDescriptionModalCommand}"/>
+
+                            <TextBlock Classes="label"
+                                       Text="Description"/>
+                            <TextBlock Classes="sublabel"
+                                       Text="{Binding DescriptionTokenCountText}"/>
+                        </DockPanel>
+                        <TextBox Text="{Binding Description}"
+                                 TextWrapping="Wrap"
+                                 AcceptsReturn="True"
+                                 MinLines="17"
+                                 MaxLines="17"/>
+                    </StackPanel>
+
+                    <UniformGrid Columns="2"
+                                 ColumnSpacing="16.0">
+                        <StackPanel Classes="field">
+                            <DockPanel Classes="header">
+                                <Button ToolTip.Tip="Generate Personality"
+                                        IsEnabled="{Binding CanGeneratePersonality}"
+                                        Classes="icon iconMagic"
+                                        Content="{icons:MaterialIconExt Kind=Magic}"
+                                        Command="{Binding OpenGeneratePersonalityModalCommand}"/>
+
+                                <TextBlock Classes="label"
+                                           Text="Personality"/>
+                                <TextBlock Classes="sublabel"
+                                           Text="{Binding PersonalityTokenCountText}"/>
+                            </DockPanel>
+                            <TextBox Text="{Binding Personality}"
+                                     TextWrapping="Wrap"
+                                     AcceptsReturn="True"
+                                     MinLines="3"
+                                     MaxLines="3"/>
+                        </StackPanel>
+
+                        <StackPanel Classes="field">
+                            <StackPanel Classes="header">
+                                <TextBlock Classes="label"
+                                           Text="Scenario"/>
+                                <TextBlock Classes="sublabel"
+                                           Text="{Binding ScenarioTokenCountText}"/>
+                            </StackPanel>
+                            <TextBox Text="{Binding Scenario}"
+                                     TextWrapping="Wrap"
+                                     AcceptsReturn="True"
+                                     MinLines="3"
+                                     MaxLines="3"/>
+                        </StackPanel>
+                    </UniformGrid>
+                </StackPanel>
+            </TabItem>
+
+            <TabItem Header="Messages">
+                <StackPanel Classes="editorTab">
+                    <StackPanel Classes="field">
+                        <UniformGrid Classes="header"
+                                     Columns="3">
+                            <StackPanel Classes="header"
+                                        HorizontalAlignment="Left">
+                                <TextBlock Classes="label"
+                                           Text="Greeting"/>
+                                <TextBlock Classes="sublabel"
+                                           Text="{Binding GreetingTokenCountText}"/>
+                            </StackPanel>
+
+                            <ListBox Classes="segmentSelector"
+                                     SelectedIndex="{Binding CurrentGreetingCategoryIndex}"
+                                     HorizontalAlignment="Center">
+                                <ListBoxItem Content="Standard"/>
+                                <ListBoxItem Content="Group-Only"/>
+                            </ListBox>
+
+                            <StackPanel Classes="buttons"
+                                        HorizontalAlignment="Right">
+                                <TextBlock Classes="sublabel" Text="{Binding GreetingIndexText}"
+                                           Margin="2.0 0.0"
+                                           VerticalAlignment="Bottom"/>
+                                <Button ToolTip.Tip="Previous Greeting"
+                                        IsEnabled="{Binding CanGoToPreviousGreeting}"
+                                        Classes="icon iconNavigate"
+                                        Content="{icons:MaterialIconExt Kind=ArrowLeftThick}"
+                                        Command="{Binding GoToPreviousGreetingCommand}"/>
+                                <Button ToolTip.Tip="Next Greeting"
+                                        IsEnabled="{Binding CanGoToNextGreeting}"
+                                        Classes="icon iconNavigate"
+                                        Content="{icons:MaterialIconExt Kind=ArrowRightThick}"
+                                        Command="{Binding GoToNextGreetingCommand}"/>
+                                <Separator Classes="vertical"
+                                           CornerRadius="1.0"
+                                           Width="2.0"/>
+                                <Button ToolTip.Tip="Add Greeting"
+                                        Classes="icon iconAdd"
+                                        Content="{icons:MaterialIconExt Kind=Plus}"
+                                        Command="{Binding AddGreetingCommand}"/>
+                                <Button ToolTip.Tip="Remove Greeting"
+                                        IsEnabled="{Binding CanRemoveGreeting}"
+                                        Classes="icon iconRemove"
+                                        Content="{icons:MaterialIconExt Kind=Minus}"
+                                        Command="{Binding RemoveGreetingCommand}"/>
+                                <Button ToolTip.Tip="Clear Greetings"
+                                        IsEnabled="{Binding CanClearGreetings}"
+                                        Classes="icon iconDeleteSweep"
+                                        Content="{icons:MaterialIconExt Kind=DeleteSweep}"
+                                        Command="{Binding ClearGreetingsCommand}"/>
+                                <Button ToolTip.Tip="Generate Greeting"
+                                        IsEnabled="{Binding CanGenerateGreeting}"
+                                        Classes="icon iconMagic"
+                                        Content="{icons:MaterialIconExt Kind=Magic}"
+                                        Command="{Binding OpenGenerateGreetingModalCommand}"/>
+                            </StackPanel>
+                        </UniformGrid>
+
+                        <TextBox IsEnabled="{Binding !ShowAddGroupOnlyGreetingPrompt}"
+                                 Text="{Binding CurrentGreeting}"
+                                 TextWrapping="Wrap"
+                                 AcceptsReturn="True"
+                                 MinLines="9"
+                                 MaxLines="9"/>
+                    </StackPanel>
+
+                    <StackPanel Classes="field">
+                        <StackPanel Classes="header">
+                            <TextBlock Classes="label"
+                                       Text="Example Messages"/>
+                            <TextBlock Classes="sublabel"
+                                       Text="{Binding ExampleMessagesTokenCountText}"/>
+                        </StackPanel>
+                        <TextBox Text="{Binding ExampleMessages}"
+                                 TextWrapping="Wrap"
+                                 AcceptsReturn="True"
+                                 MinLines="11"
+                                 MaxLines="11"/>
+                    </StackPanel>
+                </StackPanel>
+            </TabItem>
+
+            <TabItem Header="Prompt Overrides">
+                <StackPanel Classes="editorTab">
+                    <StackPanel Classes="field">
+                        <DockPanel Classes="header">
+                            <TextBlock Classes="label"
+                                       Text="System Prompt"/>
+                            <TextBlock Classes="sublabel"
+                                       Text="{Binding SystemPromptTokenCountText}"/>
+                        </DockPanel>
+                        <TextBox Text="{Binding SystemPrompt}"
+                                 TextWrapping="Wrap"
+                                 AcceptsReturn="True"
+                                 MinLines="17"
+                                 MaxLines="17"/>
+                    </StackPanel>
+
+                    <StackPanel Classes="field">
+                        <DockPanel Classes="header">
+                            <TextBlock Classes="label"
+                                       Text="Post-History Instructions"/>
+                            <TextBlock Classes="sublabel"
+                                       Text="{Binding PostHistoryInstructionsTokenCountText}"/>
+                        </DockPanel>
+                        <TextBox Text="{Binding PostHistoryInstructions}"
+                                 TextWrapping="Wrap"
+                                 AcceptsReturn="True"
+                                 MinLines="3"
+                                 MaxLines="3"/>
+                    </StackPanel>
+                </StackPanel>
+            </TabItem>
+
+            <TabItem Header="Metadata">
+                <StackPanel Classes="editorTab">
+                    <UniformGrid Columns="2"
+                                 ColumnSpacing="16.0">
+                        <StackPanel Classes="field">
+                            <DockPanel Classes="header">
+                                <TextBlock Classes="label"
+                                           Text="Creator Name"/>
+                            </DockPanel>
+                            <TextBox Text="{Binding CreatorName}"/>
+                        </StackPanel>
+
+                        <StackPanel Classes="field">
+                            <DockPanel Classes="header">
+                                <TextBlock Classes="label"
+                                           Text="Version"/>
+                            </DockPanel>
+                            <TextBox Text="{Binding Version}"/>
+                        </StackPanel>
+                    </UniformGrid>
+
+                    <StackPanel Classes="field">
+                        <DockPanel Classes="header">
+                            <StackPanel DockPanel.Dock="Right"
+                                        Orientation="Horizontal"
+                                        Spacing="6.0">
+                                <TextBlock Text="Language:"
+                                           FontSize="13.0"
+                                           Foreground="{DynamicResource ForegroundSecondaryBrush}"
+                                           VerticalAlignment="Center"/>
+                                <ComboBox ItemsSource="{Binding CreatorNotesLanguages}"
+                                          SelectedItem="{Binding CreatorNotesLanguage}"
+                                          FontSize="12.0"
+                                          VerticalAlignment="Center"
+                                          MinHeight="24.0"
+                                          Width="120.0"
+                                          Padding="10.0 0.0">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate DataType="models:LanguageItem">
+                                            <TextBlock Text="{Binding DisplayName}"/>
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
+                            </StackPanel>
+
+                            <TextBlock Classes="label"
+                                       Text="Creator Notes"/>
+                        </DockPanel>
+
+                        <TextBox MinLines="11"
+                                 MaxLines="11"
+                                 AcceptsReturn="True"
+                                 TextWrapping="Wrap"
+                                 Text="{Binding CurrentCreatorNotes}"/>
+                    </StackPanel>
+
+                    <StackPanel Classes="field">
+                        <DockPanel Classes="header">
+                            <StackPanel Classes="buttons">
+                                <Button ToolTip.Tip="Clear Tags"
+                                        Classes="icon iconDeleteSweep"
+                                        IsEnabled="{Binding !!Tags.Count}"
+                                        Content="{icons:MaterialIconExt Kind=DeleteSweep}"
+                                        Command="{Binding ClearTagsCommand}"/>
+                                <Button ToolTip.Tip="Generate Tags"
+                                        Classes="icon iconMagic"
+                                        IsEnabled="{Binding CanGenerateTags}"
+                                        Content="{icons:MaterialIconExt Kind=Magic}"
+                                        Command="{Binding GenerateTagsCommand}"/>
+                            </StackPanel>
+
+                            <TextBlock Classes="label"
+                                       Text="Tags"/>
+                        </DockPanel>
+
+                        <Border Background="{DynamicResource TagEditorBackground}"
+                                BorderBrush="{DynamicResource TagEditorBorderBrush}"
+                                BorderThickness="1.0"
+                                CornerRadius="{DynamicResource ControlCornerRadius}"
+                                Padding="4.0">
+                            <controls:TagEditor Items="{Binding Tags}" MaxLines="3" EnsureMaxHeight="True"/>
+                        </Border>
+                    </StackPanel>
+                </StackPanel>
+            </TabItem>
+        </TabControl>
+    </StackPanel>
+</UserControl>

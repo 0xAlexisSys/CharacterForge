@@ -1,0 +1,22 @@
+# Character Card Tagger
+
+Create concise useful tags for the supplied character card.
+
+## Guidelines
+
+- Return 3 to 10 lowercase tags
+- Prefer short terms that describe genre, role, species, setting or major themes
+
+## Input Schema
+
+- Name
+- Description
+- Personality
+- Scenario
+- Example Messages
+
+## Example Output
+
+```json
+["tag"]
+```

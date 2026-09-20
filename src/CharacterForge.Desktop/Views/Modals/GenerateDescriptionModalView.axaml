@@ -1,0 +1,67 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:viewModels="using:CharacterForge.Desktop.ViewModels"
+             xmlns:icons="using:Material.Icons.Avalonia"
+             x:Class="CharacterForge.Desktop.Views.GenerateDescriptionModalView"
+             x:DataType="viewModels:GenerateDescriptionModalViewModel">
+    <StackPanel Classes="modal"
+                Width="480.0">
+        <TextBlock Classes="header"
+                   Text="Generate Description"/>
+        <Separator/>
+        <StackPanel Orientation="Vertical"
+                    Spacing="6.0">
+            <StackPanel Classes="field">
+                <StackPanel Classes="header">
+                    <TextBlock Classes="label"
+                               Text="Included Fields"/>
+                    <icons:MaterialIcon ToolTip.Tip="Character card fields to include in the sent user prompt."
+                                        Kind="TooltipHelp"
+                                        IconSize="20.0"
+                                        Background="Transparent"
+                                        Padding="2.0"/>
+                </StackPanel>
+                <UniformGrid Columns="3">
+                    <CheckBox Content="Personality"
+                              IsEnabled="{Binding Personality.Length}"
+                              IsChecked="{Binding IncludePersonality}"/>
+                    <CheckBox Content="Scenario"
+                              IsEnabled="{Binding Scenario.Length}"
+                              IsChecked="{Binding IncludeScenario}"/>
+                    <CheckBox Content="Example Messages"
+                              IsEnabled="{Binding ExampleMessages.Length}"
+                              IsChecked="{Binding IncludeExampleMessages}"/>
+                </UniformGrid>
+            </StackPanel>
+
+            <StackPanel Classes="field">
+                <StackPanel Classes="header">
+                    <TextBlock Classes="label"
+                               Text="Prompt"/>
+                    <icons:MaterialIcon Kind="Required"
+                                        IconSize="20.0"
+                                        Padding="2.0" />
+                </StackPanel>
+                <TextBox Text="{Binding Prompt}"
+                         TextWrapping="Wrap"
+                         AcceptsReturn="True"
+                         MinLines="3"
+                         MaxLines="3"/>
+            </StackPanel>
+        </StackPanel>
+        <Separator/>
+        <DockPanel Classes="footer">
+            <StackPanel Classes="buttons">
+                <Button Classes="secondary"
+                        IsEnabled="{Binding !IsGenerating}"
+                        Content="Cancel"
+                        Command="{Binding CancelCommand}"/>
+                <Button Classes="primary"
+                        IsEnabled="{Binding CanGenerate}"
+                        Content="Generate"
+                        Command="{Binding GenerateCommand}"/>
+            </StackPanel>
+            <Decorator/>
+        </DockPanel>
+    </StackPanel>
+</UserControl>

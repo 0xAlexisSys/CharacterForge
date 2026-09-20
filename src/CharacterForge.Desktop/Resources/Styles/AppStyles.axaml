@@ -1,0 +1,394 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:icons="using:Material.Icons.Avalonia">
+    <Style Selector=":is(TopLevel)">
+        <Setter Property="FontWeight" Value="Light"/>
+    </Style>
+
+    <Style Selector="Window">
+        <Setter Property="Background" Value="{DynamicResource AppBackgroundBrush}"/>
+    </Style>
+
+    <Style Selector="TabItem">
+        <Setter Property="FontWeight" Value="Medium"/>
+        <Setter Property="FontSize" Value="16.0"/>
+    </Style>
+
+    <Style Selector="StackPanel.field, Grid.field">
+        <Style Selector="^ DockPanel.header, ^ StackPanel.header, ^ UniformGrid.header">
+            <Setter Property="Height" Value="24.0"/>
+
+            <Style Selector="^ TextBlock.label">
+                <Setter Property="FontWeight" Value="Regular"/>
+                <Setter Property="FontSize" Value="16.0"/>
+                <Setter Property="Foreground" Value="{DynamicResource ForegroundPrimaryBrush}"/>
+            </Style>
+
+            <Style Selector="^ TextBlock.sublabel">
+                <Setter Property="FontSize" Value="12.0"/>
+                <Setter Property="Foreground" Value="{DynamicResource ForegroundMutedBrush}"/>
+                <Setter Property="Margin" Value="4.0 1.0"/>
+            </Style>
+
+            <Style Selector="^ > :is(Control)">
+                <Setter Property="VerticalAlignment" Value="Bottom"/>
+            </Style>
+        </Style>
+
+        <Style Selector="^ DockPanel.header">
+            <Setter Property="LastChildFill" Value="False"/>
+            <Setter Property="HorizontalSpacing" Value="4.0"/>
+
+            <Style Selector="^ > Button, ^ > StackPanel.buttons">
+                <Setter Property="DockPanel.Dock" Value="Right"/>
+            </Style>
+        </Style>
+
+        <Style Selector="^ StackPanel.header">
+            <Setter Property="Orientation" Value="Horizontal"/>
+            <Setter Property="Spacing" Value="4.0"/>
+        </Style>
+
+        <Style Selector="^ Button.icon">
+            <Setter Property="CornerRadius" Value="{DynamicResource ControlCornerRadius}"/>
+            <Setter Property="Width" Value="24.0"/>
+            <Setter Property="Height" Value="24.0"/>
+
+            <Style Selector="^ > icons|MaterialIcon">
+                <Setter Property="IconSize" Value="16.0"/>
+            </Style>
+        </Style>
+
+        <Style Selector="^ StackPanel.buttons">
+            <Setter Property="Orientation" Value="Horizontal"/>
+            <Setter Property="Spacing" Value="4.0"/>
+            <Setter Property="Height" Value="24.0"/>
+        </Style>
+    </Style>
+
+    <!-- Editor Layout Helpers -->
+    <Style Selector="StackPanel">
+        <Style Selector="^.editorTab">
+            <Setter Property="Orientation" Value="Vertical"/>
+            <Setter Property="Spacing" Value="12.0"/>
+        </Style>
+
+        <Style Selector="^.field">
+            <Setter Property="Orientation" Value="Vertical"/>
+            <Setter Property="Spacing" Value="6.0"/>
+        </Style>
+
+        <Style Selector="^.modal">
+            <Setter Property="Orientation" Value="Vertical"/>
+            <Setter Property="Spacing" Value="16.0"/>
+
+            <Style Selector="^ > TextBlock.header">
+                <Setter Property="FontWeight" Value="Bold"/>
+                <Setter Property="FontSize" Value="18.0"/>
+            </Style>
+
+            <Style Selector="^ > DockPanel.footer">
+                <Style Selector="^ > Button, ^ > StackPanel.buttons">
+                    <Setter Property="DockPanel.Dock" Value="Right"/>
+                </Style>
+
+                <Style Selector="^ > StackPanel.buttons">
+                    <Setter Property="Orientation" Value="Horizontal"/>
+                    <Setter Property="Spacing" Value="8.0"/>
+                </Style>
+
+                <Style Selector="^ > :is(Control)">
+                    <Setter Property="VerticalAlignment" Value="Bottom"/>
+                </Style>
+            </Style>
+
+            <Style Selector="^ > Separator">
+                <Setter Property="Margin" Value="0.0"/>
+            </Style>
+        </Style>
+    </Style>
+
+    <Style Selector="Grid.field">
+        <Setter Property="RowSpacing" Value="6.0"/>
+    </Style>
+
+    <Style Selector="Button">
+        <Setter Property="Padding" Value="8.0 4.0"/>
+
+        <Style Selector="^.primary">
+            <Style Selector="^ /template/ ContentPresenter#PART_ContentPresenter">
+                <Setter Property="Foreground" Value="{DynamicResource AccentButtonForeground}"/>
+                <Setter Property="Background" Value="{DynamicResource AccentButtonBackground}"/>
+                <Setter Property="BorderBrush" Value="{DynamicResource AccentButtonBorderBrush}"/>
+            </Style>
+
+            <Style Selector="^:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+                <Setter Property="Foreground" Value="{DynamicResource AccentButtonForegroundPointerOver}"/>
+                <Setter Property="Background" Value="{DynamicResource AccentButtonBackgroundPointerOver}"/>
+                <Setter Property="BorderBrush" Value="{DynamicResource AccentButtonBorderBrushPointerOver}"/>
+            </Style>
+
+            <Style Selector="^:pressed /template/ ContentPresenter#PART_ContentPresenter">
+                <Setter Property="Foreground" Value="{DynamicResource AccentButtonForegroundPressed}"/>
+                <Setter Property="Background" Value="{DynamicResource AccentButtonBackgroundPressed}"/>
+                <Setter Property="BorderBrush" Value="{DynamicResource AccentButtonBorderBrushPressed}"/>
+            </Style>
+
+            <Style Selector="^:disabled /template/ ContentPresenter#PART_ContentPresenter">
+                <Setter Property="Foreground" Value="{DynamicResource AccentButtonForegroundDisabled}"/>
+                <Setter Property="Background" Value="{DynamicResource AccentButtonBackgroundDisabled}"/>
+                <Setter Property="BorderBrush" Value="{DynamicResource AccentButtonBorderBrushDisabled}"/>
+            </Style>
+        </Style>
+
+        <Style Selector="^.secondary">
+            <Style Selector="^ /template/ ContentPresenter#PART_ContentPresenter">
+                <Setter Property="Foreground" Value="#FFD2D8EC"/>
+                <Setter Property="Background" Value="#FF1E2436"/>
+                <Setter Property="BorderBrush" Value="#FF3E4866"/>
+            </Style>
+
+            <Style Selector="^:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+                <Setter Property="Foreground" Value="#FFFFFFFF"/>
+                <Setter Property="Background" Value="#FF262E44"/>
+                <Setter Property="BorderBrush" Value="#FF6073A0"/>
+            </Style>
+
+            <Style Selector="^:pressed /template/ ContentPresenter#PART_ContentPresenter">
+                <Setter Property="Foreground" Value="#FFFFFFFF"/>
+                <Setter Property="Background" Value="#FF181D2B"/>
+                <Setter Property="BorderBrush" Value="#FF4D6FB5"/>
+            </Style>
+
+            <Style Selector="^:disabled /template/ ContentPresenter#PART_ContentPresenter">
+                <Setter Property="Foreground" Value="#FF5C647C"/>
+                <Setter Property="Background" Value="#FF161A26"/>
+                <Setter Property="BorderBrush" Value="#FF282E3E"/>
+            </Style>
+        </Style>
+
+        <Style Selector="^.danger">
+            <Style Selector="^ /template/ ContentPresenter#PART_ContentPresenter">
+                <Setter Property="Foreground" Value="#FFFFFFFF"/>
+                <Setter Property="Background" Value="#FFB83A3A"/>
+                <Setter Property="BorderBrush" Value="#FFD85252"/>
+            </Style>
+
+            <Style Selector="^:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+                <Setter Property="Foreground" Value="#FFFFFFFF"/>
+                <Setter Property="Background" Value="#FFCC4444"/>
+                <Setter Property="BorderBrush" Value="#FFE66B6B"/>
+            </Style>
+
+            <Style Selector="^:pressed /template/ ContentPresenter#PART_ContentPresenter">
+                <Setter Property="Foreground" Value="#FFFFFFFF"/>
+                <Setter Property="Background" Value="#FF9E2A2A"/>
+                <Setter Property="BorderBrush" Value="#FFB83A3A"/>
+            </Style>
+
+            <Style Selector="^:disabled /template/ ContentPresenter#PART_ContentPresenter">
+                <Setter Property="Foreground" Value="#FF8C6060"/>
+                <Setter Property="Background" Value="#FF4A2222"/>
+                <Setter Property="BorderBrush" Value="Transparent"/>
+            </Style>
+        </Style>
+
+        <Style Selector="^.icon">
+            <Setter Property="Padding" Value="0.0"/>
+
+            <Style Selector="^, ^:disabled">
+                <Style Selector="^ /template/ ContentPresenter#PART_ContentPresenter">
+                    <Setter Property="Background" Value="Transparent"/>
+                    <Setter Property="BorderBrush" Value="Transparent"/>
+                    <Setter Property="BorderThickness" Value="0.0"/>
+                </Style>
+            </Style>
+
+            <Style Selector="^:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+                <Setter Property="Background" Value="#20FFFFFF"/>
+                <Setter Property="BorderBrush" Value="Transparent"/>
+            </Style>
+
+            <Style Selector="^:pressed /template/ ContentPresenter#PART_ContentPresenter">
+                <Setter Property="Background" Value="#33FFFFFF"/>
+                <Setter Property="BorderBrush" Value="Transparent"/>
+            </Style>
+
+            <Style Selector="^.iconMagic">
+                <Setter Property="Foreground" Value="{DynamicResource IconMagicBrush}"/>
+            </Style>
+
+            <Style Selector="^.iconAdd">
+                <Setter Property="Foreground" Value="{DynamicResource IconAddBrush}"/>
+            </Style>
+
+            <Style Selector="^.iconRemove">
+                <Setter Property="Foreground" Value="{DynamicResource IconRemoveBrush}"/>
+            </Style>
+
+            <Style Selector="^.iconDeleteSweep">
+                <Setter Property="Foreground" Value="{DynamicResource IconDeleteSweepBrush}"/>
+            </Style>
+
+            <Style Selector="^.iconNavigate">
+                <Setter Property="Foreground" Value="{DynamicResource IconNavigateBrush}"/>
+            </Style>
+        </Style>
+    </Style>
+
+    <!-- Separators -->
+    <Style Selector="Separator">
+        <Setter Property="Background" Value="{DynamicResource SurfaceCardBorderBrush}"/>
+
+        <Style Selector="^.vertical">
+            <Setter Property="VerticalAlignment" Value="Stretch"/>
+            <Setter Property="Height" Value="NaN"/>
+            <Setter Property="Margin" Value="0.0 0.0"/>
+        </Style>
+    </Style>
+
+    <!-- Segmented / Scope Selector ListBox -->
+    <Style Selector="ListBox.segmentSelector">
+        <Setter Property="Background" Value="{DynamicResource AppBackgroundBrush}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource SurfaceCardBorderBrush}"/>
+        <Setter Property="BorderThickness" Value="1.0"/>
+        <Setter Property="CornerRadius" Value="4.0"/>
+        <Setter Property="Padding" Value="2.0"/>
+        <Setter Property="ItemsPanel">
+            <ItemsPanelTemplate>
+                <StackPanel Orientation="Horizontal" Spacing="2.0"/>
+            </ItemsPanelTemplate>
+        </Setter>
+
+        <Style Selector="^ ListBoxItem">
+            <Setter Property="Padding" Value="8.0 2.0"/>
+            <Setter Property="CornerRadius" Value="3.0"/>
+            <Setter Property="FontWeight" Value="Medium"/>
+            <Setter Property="FontSize" Value="12.0"/>
+            <Setter Property="Foreground" Value="{DynamicResource ForegroundSecondaryBrush}"/>
+            <Setter Property="MinWidth" Value="0.0"/>
+            <Setter Property="MinHeight" Value="0.0"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Cursor" Value="Hand"/>
+
+            <Style Selector="^ /template/ ContentPresenter#PART_ContentPresenter">
+                <Setter Property="CornerRadius" Value="3.0"/>
+            </Style>
+
+            <Style Selector="^:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+                <Setter Property="Background" Value="#20FFFFFF"/>
+                <Setter Property="Foreground" Value="{DynamicResource ForegroundPrimaryBrush}"/>
+            </Style>
+
+            <Style Selector="^:selected /template/ ContentPresenter#PART_ContentPresenter">
+                <Setter Property="Background" Value="{DynamicResource AccentBrush}"/>
+                <Setter Property="Foreground" Value="#FFFFFFFF"/>
+            </Style>
+
+            <Style Selector="^:selected:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+                <Setter Property="Background" Value="{DynamicResource AccentLightBrush}"/>
+                <Setter Property="Foreground" Value="#FFFFFFFF"/>
+            </Style>
+        </Style>
+    </Style>
+
+    <!-- ScrollBar Styles -->
+    <Style Selector="ScrollBar">
+        <Setter Property="Background" Value="Transparent"/>
+
+        <Style Selector="^ /template/ Thumb">
+            <Setter Property="CornerRadius" Value="{DynamicResource ControlCornerRadius}"/>
+        </Style>
+
+        <Style Selector="^ /template/ Thumb /template/ Border">
+            <Setter Property="CornerRadius" Value="{DynamicResource ControlCornerRadius}"/>
+        </Style>
+
+        <Style Selector="^ /template/ Rectangle#TrackRect">
+            <Setter Property="RadiusX" Value="4.0"/>
+            <Setter Property="RadiusY" Value="4.0"/>
+        </Style>
+
+        <Style Selector="^ /template/ RepeatButton#PART_LineUpButton, ^ /template/ RepeatButton#PART_LineDownButton">
+            <Setter Property="CornerRadius" Value="{DynamicResource ControlCornerRadius}"/>
+
+            <Style Selector="^ /template/ ContentPresenter#PART_ContentPresenter">
+                <Setter Property="CornerRadius" Value="{DynamicResource ControlCornerRadius}"/>
+            </Style>
+        </Style>
+    </Style>
+
+    <!-- ScrollViewer Separator -->
+    <Style Selector="ScrollViewer">
+        <Style Selector="^ /template/ Panel#PART_ScrollBarsSeparator">
+            <Setter Property="Background" Value="{DynamicResource AppBackgroundBrush}"/>
+        </Style>
+    </Style>
+
+    <!-- NotificationCard Typography & Layout Styles -->
+    <Style Selector="NotificationCard">
+        <Style Selector="^ TextBlock">
+            <Setter Property="Foreground" Value="{DynamicResource ForegroundPrimaryBrush}"/>
+        </Style>
+
+        <Style Selector="^ StackPanel > TextBlock:nth-child(1)">
+            <Setter Property="FontWeight" Value="Medium"/>
+            <Setter Property="FontSize" Value="14.0"/>
+            <Setter Property="Foreground" Value="{DynamicResource ForegroundPrimaryBrush}"/>
+        </Style>
+
+        <Style Selector="^ StackPanel > TextBlock:nth-child(2)">
+            <Setter Property="FontSize" Value="12.0"/>
+            <Setter Property="Foreground" Value="{DynamicResource ForegroundSecondaryBrush}"/>
+        </Style>
+
+
+        <Setter Property="UseLayoutRounding" Value="True"/>
+        <Setter Property="Width" Value="{DynamicResource NotificationCardWidth}"/>
+        <Setter Property="Foreground" Value="{DynamicResource ForegroundPrimaryBrush}"/>
+        <Setter Property="RenderTransformOrigin" Value="50%,75%"/>
+        <Setter Property="BorderThickness" Value="1.0"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource SurfaceElevatedBorderBrush}"/>
+        <Setter Property="Background" Value="{DynamicResource SurfaceElevatedBackgroundBrush}"/>
+        <Setter Property="CornerRadius" Value="{DynamicResource OverlayCornerRadius}"/>
+        <Setter Property="Template">
+            <ControlTemplate>
+                <LayoutTransformControl Name="PART_LayoutTransformControl" UseRenderTransform="True">
+                    <Border CornerRadius="{TemplateBinding CornerRadius}"
+                            BoxShadow="0 8 24 0 #66000000"
+                            Margin="5 5 5 10">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="{TemplateBinding CornerRadius}"
+                                ClipToBounds="True">
+                            <DockPanel>
+                                <Panel x:Name="PART_HeaderBar"
+                                       Height="3.0"
+                                       Background="{DynamicResource NotificationCardProgressBackgroundBrush}"
+                                       DockPanel.Dock="Top"/>
+                                <ContentPresenter Name="PART_ContentPresenter"
+                                                  MinHeight="64"
+                                                  Content="{TemplateBinding Content}"/>
+                            </DockPanel>
+                        </Border>
+                    </Border>
+                </LayoutTransformControl>
+            </ControlTemplate>
+        </Setter>
+
+        <Style Selector="^:information /template/ Panel#PART_HeaderBar">
+            <Setter Property="Background" Value="{DynamicResource NotificationCardInformationBackgroundBrush}"/>
+        </Style>
+        <Style Selector="^:success /template/ Panel#PART_HeaderBar">
+            <Setter Property="Background" Value="{DynamicResource NotificationCardSuccessBackgroundBrush}"/>
+        </Style>
+        <Style Selector="^:warning /template/ Panel#PART_HeaderBar">
+            <Setter Property="Background" Value="{DynamicResource NotificationCardWarningBackgroundBrush}"/>
+        </Style>
+        <Style Selector="^:error /template/ Panel#PART_HeaderBar">
+            <Setter Property="Background" Value="{DynamicResource NotificationCardErrorBackgroundBrush}"/>
+        </Style>
+    </Style>
+</Styles>
