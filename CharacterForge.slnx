@@ -1,6 +1,7 @@
 <Solution>
     <Folder Name="/root/">
         <File Path="README.md"/>
+        <File Path="Makefile"/>
         <File Path="Directory.Build.props"/>
         <File Path="Directory.Packages.props"/>
         <File Path=".editorconfig"/>

@@ -14,8 +14,8 @@ WINDOWS_OUTPUT_FILE = $(WINDOWS_DIST_DIR)/$(NAME)-$(VERSION)-Windows-x86_64.zip
 build-windows:
 	dotnet publish --configuration Release --runtime win-x64 --self-contained
 
-# [alexis] The dot and asterisk are needed at the start and end of the source path so
-#          7-Zip doesn't preserve the leading directories.
+# The dot and asterisk are needed at the start and end of the source path so
+# 7-Zip doesn't preserve the leading directories.
 pkg-windows:
 	rm -f "$(WINDOWS_OUTPUT_FILE)"
 
