@@ -1,6 +1,6 @@
 # CharacterForge
 
-<img src="images/Interface.png" alt="drawing" width="33%"/>
+![CharacterForge UI](images/Interface.png)
 
 CharacterForge is an application for **editing Character Cards**, structured profiles used by language model frontends
 such as [SillyTavern](https://github.com/SillyTavern/SillyTavern).
