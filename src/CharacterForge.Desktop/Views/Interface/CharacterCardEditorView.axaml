@@ -61,7 +61,7 @@
                                     Orientation="Vertical"
                                     Spacing="8.0"
                                     VerticalAlignment="Center">
-                            <Button Classes="secondary"
+                            <Button Classes="primary"
                                     Content="{icons:MaterialIconTextExt Kind=Magnify, Text='Inspect'}"
                                     HorizontalContentAlignment="Center"
                                     HorizontalAlignment="Stretch"
