@@ -36,6 +36,11 @@ public sealed class WindowService(IClassicDesktopStyleApplicationLifetime lifeti
 
     public void HideModal() => _mainWindowViewModel.Value.ModalContent = null;
 
+    public void HideModal<TViewModel>() where TViewModel : ViewModel
+    {
+        if (_mainWindowViewModel.Value.ModalContent is TViewModel) HideModal();
+    }
+
     public async Task<string[]> ShowOpenFileDialogAsync(FilePickerOpenOptions options) => [..(await _storageProvider.Value.OpenFilePickerAsync(options)).Select(static file => file.Path.LocalPath)];
 
     public async Task<string?> ShowSaveFileDialogAsync(FilePickerSaveOptions options) => (await _storageProvider.Value.SaveFilePickerAsync(options))?.Path.LocalPath;
