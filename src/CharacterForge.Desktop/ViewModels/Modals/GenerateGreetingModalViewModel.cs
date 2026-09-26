@@ -72,7 +72,7 @@ public sealed partial class GenerateGreetingModalViewModel : ViewModel
             {
                 IsGenerating = true;
                 await StartGeneration.Invoke(Prompt, IncludeDescription, IncludePersonality, IncludeScenario, IncludeExampleMessages);
-                _windowService.HideModal();
+                _windowService.HideModal<GenerateGreetingModalViewModel>();
             }
             catch (Exception exception)
             {
