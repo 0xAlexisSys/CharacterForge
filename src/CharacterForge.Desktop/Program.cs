@@ -37,6 +37,7 @@ public static class Program
                 .AddTransientViewAndViewModel<AcceptModalView, AcceptModalViewModel>()
                 .AddTransientViewAndViewModel<ConfirmModalView, ConfirmModalViewModel>()
                 .AddTransientViewAndViewModel<InspectModalView, InspectModalViewModel>()
+                .AddTransientViewAndViewModel<GenerateIconPromptModalView, GenerateIconPromptModalViewModel>()
                 .AddTransientViewAndViewModel<GenerateDescriptionModalView, GenerateDescriptionModalViewModel>()
                 .AddTransientViewAndViewModel<GeneratePersonalityModalView, GeneratePersonalityModalViewModel>()
                 .AddTransientViewAndViewModel<GenerateGreetingModalView, GenerateGreetingModalViewModel>();

@@ -56,9 +56,7 @@
                                    Classes="vertical"
                                    CornerRadius="2.0"
                                    Width="4.0"/>
-
-                        <StackPanel DockPanel.Dock="Top"
-                                    Orientation="Vertical"
+                        <StackPanel Orientation="Vertical"
                                     Spacing="8.0"
                                     VerticalAlignment="Center">
                             <Button Classes="primary"
@@ -71,6 +69,12 @@
                                     HorizontalContentAlignment="Center"
                                     HorizontalAlignment="Stretch"
                                     Command="{Binding ResetCommand}"/>
+                            <Button Classes="secondary"
+                                    IsEnabled="{Binding CanGenerateIconPrompt}"
+                                    Content="{icons:MaterialIconTextExt Kind=Sparkles, Text='Generate Icon Prompt'}"
+                                    HorizontalContentAlignment="Center"
+                                    HorizontalAlignment="Stretch"
+                                    Command="{Binding OpenGenerateIconPromptModalCommand}"/>
                         </StackPanel>
                     </DockPanel>
                 </Grid>

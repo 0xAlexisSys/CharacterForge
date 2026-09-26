@@ -1,0 +1,68 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:viewModels="using:CharacterForge.Desktop.ViewModels"
+             xmlns:icons="using:Material.Icons.Avalonia"
+             x:Class="CharacterForge.Desktop.Views.GenerateIconPromptModalView"
+             x:DataType="viewModels:GenerateIconPromptModalViewModel">
+    <StackPanel Classes="modal"
+                Width="500.0">
+        <TextBlock Classes="header"
+                   Text="Generate Icon Prompt"/>
+        <Separator/>
+        <StackPanel Orientation="Vertical"
+                    Spacing="6.0">
+            <StackPanel Classes="field">
+                <StackPanel Classes="header">
+                    <TextBlock Classes="label"
+                               Text="Guidance"/>
+                </StackPanel>
+                <TextBox Text="{Binding Guidance}"
+                         TextWrapping="Wrap"
+                         AcceptsReturn="True"
+                         MinLines="2"
+                         MaxLines="2"/>
+            </StackPanel>
+
+            <StackPanel Classes="field">
+                <DockPanel Classes="header">
+                    <Button ToolTip.Tip="Copy To Clipboard"
+                            IsEnabled="{Binding HasOutput}"
+                            Classes="icon"
+                            Content="{icons:MaterialIconExt Kind=ContentCopy}"
+                            Command="{Binding CopyOutputToClipboardCommand}"/>
+
+                    <TextBlock Classes="label"
+                               Text="Output"/>
+                    <icons:MaterialIcon ToolTip.Tip="The generated positive prompt."
+                                        Kind="TooltipHelp"
+                                        IconSize="20.0"
+                                        Background="Transparent"
+                                        Padding="2.0"/>
+                </DockPanel>
+                <Border Classes="codeBlock">
+                    <ScrollViewer HorizontalScrollBarVisibility="Disabled"
+                                  VerticalScrollBarVisibility="Auto"
+                                  MinHeight="150.0"
+                                  MaxHeight="150.0">
+                        <SelectableTextBlock Text="{Binding Output}"
+                                             TextWrapping="Wrap"/>
+                    </ScrollViewer>
+                </Border>
+            </StackPanel>
+        </StackPanel>
+        <Separator/>
+        <DockPanel Classes="footer">
+            <StackPanel Classes="buttons">
+                <Button Classes="secondary"
+                        IsEnabled="{Binding !IsGenerating}"
+                        Content="Close"
+                        Command="{Binding CloseCommand}"/>
+                <Button Classes="primary"
+                        IsEnabled="{Binding CanGenerate}"
+                        Content="Generate"
+                        Command="{Binding GenerateCommand}"/>
+            </StackPanel>
+            <Decorator/>
+        </DockPanel>
+    </StackPanel>
+</UserControl>
