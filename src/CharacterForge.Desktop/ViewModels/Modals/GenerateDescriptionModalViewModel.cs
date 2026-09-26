@@ -64,7 +64,7 @@ public sealed partial class GenerateDescriptionModalViewModel : ViewModel
             {
                 IsGenerating = true;
                 await StartGeneration.Invoke(Prompt, IncludePersonality, IncludeScenario, IncludeExampleMessages);
-                _windowService.HideModal();
+                _windowService.HideModal<GenerateDescriptionModalViewModel>();
             }
             catch (Exception exception)
             {
