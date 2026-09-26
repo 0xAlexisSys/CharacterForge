@@ -12,7 +12,7 @@ using CharacterForge.Desktop.Views;
 
 namespace CharacterForge.Desktop.Services;
 
-public sealed class DialogService(IClassicDesktopStyleApplicationLifetime lifetime)
+public sealed class WindowService(IClassicDesktopStyleApplicationLifetime lifetime)
 {
     private static readonly ImmutableArray<string> DefaultNotificationTitles =
     [

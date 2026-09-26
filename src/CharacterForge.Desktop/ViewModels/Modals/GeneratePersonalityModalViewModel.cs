@@ -42,11 +42,11 @@ public sealed partial class GeneratePersonalityModalViewModel : ViewModel
 
     public Func<string, bool, bool, bool, Task>? StartGeneration;
 
-    private readonly DialogService _dialogService;
+    private readonly WindowService _windowService;
 
-    public GeneratePersonalityModalViewModel(DialogService dialogService, CharacterCardEditorViewModel characterCardEditorViewModel)
+    public GeneratePersonalityModalViewModel(WindowService windowService, CharacterCardEditorViewModel characterCardEditorViewModel)
     {
-        _dialogService = dialogService;
+        _windowService = windowService;
 
         Description = characterCardEditorViewModel.Description.Trim();
         IncludeDescription = Description.Length != 0;
@@ -65,11 +65,11 @@ public sealed partial class GeneratePersonalityModalViewModel : ViewModel
             {
                 IsGenerating = true;
                 await StartGeneration.Invoke(Prompt, IncludeDescription, IncludeScenario, IncludeExampleMessages);
-                _dialogService.HideModal();
+                _windowService.HideModal();
             }
             catch (Exception exception)
             {
-                _dialogService.ShowNotification(exception.Message, NotificationType.Error, title: "Generation Failed");
+                _windowService.ShowNotification(exception.Message, NotificationType.Error, title: "Generation Failed");
             }
             finally
             {
@@ -79,5 +79,5 @@ public sealed partial class GeneratePersonalityModalViewModel : ViewModel
     }
 
     [RelayCommand]
-    private void Cancel() => _dialogService.HideModal();
+    private void Cancel() => _windowService.HideModal();
 }

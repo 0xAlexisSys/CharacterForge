@@ -30,7 +30,7 @@ public static class Program
                 .AddSingleton(new HttpClient {Timeout = TimeSpan.FromMinutes(3L)})
                 .AddSingleton<Tokenizer>(TiktokenTokenizer.CreateForModel("gpt-5"))
                 .AddSingleton<FieldGeneratorService>()
-                .AddSingleton<DialogService>()
+                .AddSingleton<WindowService>()
                 .AddSingletonViewAndViewModel<MainWindowView, MainWindowViewModel>()
                 .AddSingletonViewAndViewModel<TopbarView, TopbarViewModel>()
                 .AddSingletonViewAndViewModel<CharacterCardEditorView, CharacterCardEditorViewModel>()

@@ -12,7 +12,7 @@ using JetBrains.Annotations;
 namespace CharacterForge.Desktop.ViewModels;
 
 [UsedImplicitly]
-public sealed partial class GenerateIconPromptModalViewModel(DialogService dialogService, FieldGeneratorService fieldGeneratorService, CharacterCardEditorViewModel characterCardEditorViewModel) : ViewModel
+public sealed partial class GenerateIconPromptModalViewModel(WindowService windowService, FieldGeneratorService fieldGeneratorService, CharacterCardEditorViewModel characterCardEditorViewModel) : ViewModel
 {
     [ObservableProperty]
     public partial string Guidance { get; set; } = string.Empty;
@@ -31,7 +31,7 @@ public sealed partial class GenerateIconPromptModalViewModel(DialogService dialo
     [RelayCommand]
     private async Task CopyOutputToClipboard()
     {
-        if (HasOutput) await dialogService.CopyToClipboardAsync(Output);
+        if (HasOutput) await windowService.CopyToClipboardAsync(Output);
     }
 
     [RelayCommand]
@@ -54,7 +54,7 @@ public sealed partial class GenerateIconPromptModalViewModel(DialogService dialo
         }
         catch (Exception exception)
         {
-            dialogService.ShowNotification(exception.Message, NotificationType.Error, title: "Generation Failed");
+            windowService.ShowNotification(exception.Message, NotificationType.Error, title: "Generation Failed");
         }
         finally
         {
@@ -63,5 +63,5 @@ public sealed partial class GenerateIconPromptModalViewModel(DialogService dialo
     }
 
     [RelayCommand]
-    private void Close() => dialogService.HideModal();
+    private void Close() => windowService.HideModal();
 }
