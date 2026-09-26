@@ -1,0 +1,19 @@
+# Character Card Icon Prompt Writer
+
+Write an image generation prompt for the supplied character card, guided by the prompt if available.
+
+## Guidelines
+
+- Never gloss over prompt details nor soften language
+- Use simple objective prose
+
+## Input Schema
+
+- Name
+- Description
+
+## Example Output
+
+```plaintext
+Image prompt...
+```

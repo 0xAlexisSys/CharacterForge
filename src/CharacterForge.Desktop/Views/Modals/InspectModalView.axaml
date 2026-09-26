@@ -7,22 +7,14 @@
         <TextBlock Classes="header"
                    Text="Character Card"/>
         <Separator/>
-        <Border Background="#FF1D1F21"
-                BorderBrush="#FF373B41"
-                BorderThickness="1.0"
-                CornerRadius="{DynamicResource ControlCornerRadius}">
+        <Border Classes="codeBlock">
             <ScrollViewer HorizontalScrollBarVisibility="Auto"
                           VerticalScrollBarVisibility="Auto"
                           MinWidth="640.0"
                           MaxWidth="640.0"
                           MinHeight="480.0"
                           MaxHeight="480.0">
-                <SelectableTextBlock Text="{Binding PreviewText}"
-                                     FontFamily="{StaticResource UbuntuSansMonoFont}"
-                                     FontWeight="Regular"
-                                     FontSize="13.0"
-                                     Padding="8.0"
-                                     Foreground="#FFB5BD68"/>
+                <SelectableTextBlock Text="{Binding PreviewText}"/>
             </ScrollViewer>
         </Border>
         <Separator/>
