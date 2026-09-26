@@ -91,6 +91,7 @@ public sealed partial class CharacterCardEditorViewModel : ViewModel
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(DescriptionTokenCountText))]
+    [NotifyPropertyChangedFor(nameof(CanGenerateIconPrompt))]
     [NotifyPropertyChangedFor(nameof(CanGeneratePersonality))]
     [NotifyPropertyChangedFor(nameof(CanGenerateTags))]
     public partial string Description { get; set; } = string.Empty;
@@ -136,20 +137,24 @@ public sealed partial class CharacterCardEditorViewModel : ViewModel
     public partial string CurrentCreatorNotes { get; set; } = string.Empty;
 
     [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(CanGenerateIconPrompt))]
+    public partial bool IsGeneratingIconPrompt { get; set; }
+
+    [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(CanGenerateDescription))]
-    private partial bool IsGeneratingDescription { get; set; }
+    public partial bool IsGeneratingDescription { get; set; }
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(CanGeneratePersonality))]
-    private partial bool IsGeneratingPersonality { get; set; }
+    public partial bool IsGeneratingPersonality { get; set; }
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(CanGenerateGreeting))]
-    private partial bool IsGeneratingGreeting { get; set; }
+    public partial bool IsGeneratingGreeting { get; set; }
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(CanGenerateTags))]
-    private partial bool IsGeneratingTags { get; set; }
+    public partial bool IsGeneratingTags { get; set; }
 
     public AvaloniaList<string> Tags { get; } = [];
 
@@ -214,6 +219,7 @@ public sealed partial class CharacterCardEditorViewModel : ViewModel
     }
 
     public bool CanClearGreetings { get => IsEditingStandardGreetings || _greetingCategories[CurrentGreetingCategoryIndex].Items.Count != 0; }
+    public bool CanGenerateIconPrompt { get => !Name.IsWhiteSpace() && !Description.IsWhiteSpace() && !IsGeneratingIconPrompt; }
     public bool CanGenerateDescription { get => !Name.IsWhiteSpace() && !IsGeneratingDescription; }
     public bool CanGeneratePersonality { get => !Name.IsWhiteSpace() && (!Description.IsWhiteSpace() || !ExampleMessages.IsWhiteSpace()) && !IsGeneratingPersonality; }
     public bool CanGenerateGreeting { get => !Name.IsWhiteSpace() && !IsGeneratingGreeting; }
@@ -587,6 +593,9 @@ public sealed partial class CharacterCardEditorViewModel : ViewModel
     });
 
     [RelayCommand]
+    private void OpenGenerateIconPromptModal() => _dialogService.ShowModal<GenerateIconPromptModalViewModel>();
+
+    [RelayCommand]
     private void OpenGenerateDescriptionModal() => _dialogService.ShowModal<GenerateDescriptionModalViewModel>(viewModel => viewModel.StartGeneration = (prompt, includePersonality, includeScenario, includeExampleMessages) => GenerateTextForFieldAsync("DescriptionWriter",
                                                                                                                                                                                                                                                            prompt,
                                                                                                                                                                                                                                                            value => Description = value,
@@ -783,19 +792,12 @@ public sealed partial class CharacterCardEditorViewModel : ViewModel
 
     private string BuildGenerationInput(bool includeDescription, bool includePersonality, bool includeScenario, bool includeExampleMessages, string? prompt)
     {
-        StringBuilder inputBuilder = new();
-
-        void WriteTextBlock(string name, string value)
-        {
-            if (value.Length != 0) inputBuilder.AppendLine($"{name}:\n```plaintext\n{value}\n```\n");
-        }
-
-        inputBuilder.AppendLine("# Character Card\n");
-        WriteTextBlock(nameof(Name), Name);
-        if (includeDescription) WriteTextBlock(nameof(Description), ApplyGeneralMacros(Description));
-        if (includePersonality) WriteTextBlock(nameof(Personality), ApplyGeneralMacros(Personality));
-        if (includeScenario) WriteTextBlock(nameof(Scenario), ApplyGeneralMacros(Scenario));
-        if (includeExampleMessages) WriteTextBlock("Example Messages", ApplyMacroExampleMessageStart(ApplyGeneralMacros(ExampleMessages)));
+        StringBuilder inputBuilder = new(Constants.CharacterCardMarkdownHeader);
+        inputBuilder.AppendTextBlockWithHeader("Name", Name);
+        if (includeDescription) inputBuilder.AppendTextBlockWithHeader("Description", ApplyGeneralMacros(Description));
+        if (includePersonality) inputBuilder.AppendTextBlockWithHeader("Personality", ApplyGeneralMacros(Personality));
+        if (includeScenario) inputBuilder.AppendTextBlockWithHeader("Scenario", ApplyGeneralMacros(Scenario));
+        if (includeExampleMessages) inputBuilder.AppendTextBlockWithHeader("Example Messages", ApplyMacroExampleMessageStart(ApplyGeneralMacros(ExampleMessages)));
         if (!string.IsNullOrEmpty(prompt)) inputBuilder.AppendLine($"---\n\n{prompt}");
         return inputBuilder.ToString().TrimEnd();
     }
