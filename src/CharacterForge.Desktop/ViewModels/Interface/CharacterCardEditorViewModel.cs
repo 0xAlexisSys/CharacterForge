@@ -227,7 +227,7 @@ public sealed partial class CharacterCardEditorViewModel : ViewModel
 
     private readonly Tokenizer _tokenizer;
     private readonly FieldGeneratorService _fieldGeneratorService;
-    private readonly DialogService _dialogService;
+    private readonly WindowService _windowService;
 
     private readonly ImmutableArray<GreetingCategory> _greetingCategories =
     [
@@ -258,11 +258,11 @@ public sealed partial class CharacterCardEditorViewModel : ViewModel
     /// </remarks>
     private static string ApplyMacroExampleMessageStart(string value) => value.Replace("<START>", "***", StringComparison.Ordinal);
 
-    public CharacterCardEditorViewModel(Tokenizer tokenizer, FieldGeneratorService fieldGeneratorService, DialogService dialogService)
+    public CharacterCardEditorViewModel(Tokenizer tokenizer, FieldGeneratorService fieldGeneratorService, WindowService windowService)
     {
         _tokenizer = tokenizer;
         _fieldGeneratorService = fieldGeneratorService;
-        _dialogService = dialogService;
+        _windowService = windowService;
 
         CreatorNotesLanguage = CreatorNotesLanguages[0];
         foreach (GreetingCategory greetingCategory in _greetingCategories.Where(static greetingCategory => greetingCategory.MinOneElement)) greetingCategory.Items.Add(new());
@@ -272,7 +272,7 @@ public sealed partial class CharacterCardEditorViewModel : ViewModel
     [RelayCommand]
     private async Task OpenCharacterCard()
     {
-        string[] paths = await _dialogService.ShowOpenFileDialogAsync(new()
+        string[] paths = await _windowService.ShowOpenFileDialogAsync(new()
         {
             Title = "Open a Character Card",
             AllowMultiple = false,
@@ -289,14 +289,14 @@ public sealed partial class CharacterCardEditorViewModel : ViewModel
                 {
                     if (archive.Entries.Any(static entry => entry.EncryptionMethod != ZipEncryptionMethod.None))
                     {
-                        _dialogService.ShowNotification("CHARX file is encrypted.", NotificationType.Error, title: "Open Failed");
+                        _windowService.ShowNotification("CHARX file is encrypted.", NotificationType.Error, title: "Open Failed");
                         return;
                     }
                 }
             }
             catch (Exception exception)
             {
-                _dialogService.ShowNotification($"Cannot open CHARX file: {exception.Message}", NotificationType.Error, title: "Open Failed");
+                _windowService.ShowNotification($"Cannot open CHARX file: {exception.Message}", NotificationType.Error, title: "Open Failed");
                 return;
             }
         }
@@ -305,7 +305,7 @@ public sealed partial class CharacterCardEditorViewModel : ViewModel
         {
             CharacterCardInfo characterCardInfo = await CharacterCardFile.LoadAsync(path);
 
-            if (characterCardInfo.SpecificationVersion is {Major: 3U, Minor: > 0U} or {Major: >= 4U}) _dialogService.ShowNotification($"spec_version is {characterCardInfo.SpecificationVersion}. It may have changes not supported by CharacterForge.", NotificationType.Warning);
+            if (characterCardInfo.SpecificationVersion is {Major: 3U, Minor: > 0U} or {Major: >= 4U}) _windowService.ShowNotification($"spec_version is {characterCardInfo.SpecificationVersion}. It may have changes not supported by CharacterForge.", NotificationType.Warning);
 
             _extensions.Clear();
             foreach (KeyValuePair<string, JsonElement> pair in characterCardInfo.Model.Properties.Extensions) _extensions.Add(pair.Key, pair.Value);
@@ -319,7 +319,7 @@ public sealed partial class CharacterCardEditorViewModel : ViewModel
                     catch
                     {
                         Icon = null;
-                        _dialogService.ShowNotification("Icon failed to load.", NotificationType.Warning);
+                        _windowService.ShowNotification("Icon failed to load.", NotificationType.Warning);
                     }
                     break;
                 case CharacterCardFormat.Json:
@@ -327,7 +327,7 @@ public sealed partial class CharacterCardEditorViewModel : ViewModel
 
                     if (value.GetString() is not {} encodedIconString)
                     {
-                        _dialogService.ShowNotification($"{ExtensionIconBytes} was not valid Base64.", NotificationType.Warning);
+                        _windowService.ShowNotification($"{ExtensionIconBytes} was not valid Base64.", NotificationType.Warning);
                         break;
                     }
 
@@ -338,12 +338,12 @@ public sealed partial class CharacterCardEditorViewModel : ViewModel
                     catch (ArgumentException)
                     {
                         Icon = null;
-                        _dialogService.ShowNotification($"{ExtensionIconBytes} could not be decoded to an image.", NotificationType.Warning);
+                        _windowService.ShowNotification($"{ExtensionIconBytes} could not be decoded to an image.", NotificationType.Warning);
                     }
                     catch (FormatException)
                     {
                         Icon = null;
-                        _dialogService.ShowNotification($"{ExtensionIconBytes} was not valid Base64.", NotificationType.Warning);
+                        _windowService.ShowNotification($"{ExtensionIconBytes} was not valid Base64.", NotificationType.Warning);
                     }
                     break;
                 case CharacterCardFormat.Charx:
@@ -361,7 +361,7 @@ public sealed partial class CharacterCardEditorViewModel : ViewModel
                     catch
                     {
                         Icon = null;
-                        _dialogService.ShowNotification("Icon failed to load.", NotificationType.Warning);
+                        _windowService.ShowNotification("Icon failed to load.", NotificationType.Warning);
                     }
 
                     if (characterCardInfo.CharxFiles is not null)
@@ -433,14 +433,14 @@ public sealed partial class CharacterCardEditorViewModel : ViewModel
         }
         catch (Exception exception)
         {
-            _dialogService.ShowNotification($"Cannot open character card: {exception.Message}", NotificationType.Error, title: "Open Failed");
+            _windowService.ShowNotification($"Cannot open character card: {exception.Message}", NotificationType.Error, title: "Open Failed");
         }
     }
 
     [RelayCommand]
     private async Task ExportCharacterCard()
     {
-        string? path = await _dialogService.ShowSaveFileDialogAsync(new()
+        string? path = await _windowService.ShowSaveFileDialogAsync(new()
         {
             Title = "Export Character Card",
             FileTypeChoices = ExportCharacterCardFileTypes,
@@ -515,12 +515,12 @@ public sealed partial class CharacterCardEditorViewModel : ViewModel
         catch (Exception exception)
         {
             Console.WriteLine(exception);
-            _dialogService.ShowNotification($"Failed to export character card to '{path}'", NotificationType.Error);
+            _windowService.ShowNotification($"Failed to export character card to '{path}'", NotificationType.Error);
         }
     }
 
     [RelayCommand]
-    private void Inspect() => _dialogService.ShowModal<InspectModalViewModel>(viewModel =>
+    private void Inspect() => _windowService.ShowModal<InspectModalViewModel>(viewModel =>
     {
         CharacterCardV3 characterCard = new()
         {
@@ -556,7 +556,7 @@ public sealed partial class CharacterCardEditorViewModel : ViewModel
     });
 
     [RelayCommand]
-    private void Reset() => _dialogService.ShowModal<ConfirmModalViewModel>(viewModel =>
+    private void Reset() => _windowService.ShowModal<ConfirmModalViewModel>(viewModel =>
     {
         viewModel.Title = "Please Confirm...";
         viewModel.Message = "Reset the character card?";
@@ -587,16 +587,16 @@ public sealed partial class CharacterCardEditorViewModel : ViewModel
             Tags.Clear();
             _extensions.Clear();
 
-            _dialogService.HideModal();
+            _windowService.HideModal();
         };
-        viewModel.OnCancelled = _dialogService.HideModal;
+        viewModel.OnCancelled = _windowService.HideModal;
     });
 
     [RelayCommand]
-    private void OpenGenerateIconPromptModal() => _dialogService.ShowModal<GenerateIconPromptModalViewModel>();
+    private void OpenGenerateIconPromptModal() => _windowService.ShowModal<GenerateIconPromptModalViewModel>();
 
     [RelayCommand]
-    private void OpenGenerateDescriptionModal() => _dialogService.ShowModal<GenerateDescriptionModalViewModel>(viewModel => viewModel.StartGeneration = (prompt, includePersonality, includeScenario, includeExampleMessages) => GenerateTextForFieldAsync("DescriptionWriter",
+    private void OpenGenerateDescriptionModal() => _windowService.ShowModal<GenerateDescriptionModalViewModel>(viewModel => viewModel.StartGeneration = (prompt, includePersonality, includeScenario, includeExampleMessages) => GenerateTextForFieldAsync("DescriptionWriter",
                                                                                                                                                                                                                                                            prompt,
                                                                                                                                                                                                                                                            value => Description = value,
                                                                                                                                                                                                                                                            false,
@@ -606,7 +606,7 @@ public sealed partial class CharacterCardEditorViewModel : ViewModel
                                                                                                                                                                                                                                                            value => IsGeneratingDescription = value));
 
     [RelayCommand]
-    private void OpenGeneratePersonalityModal() => _dialogService.ShowModal<GeneratePersonalityModalViewModel>(viewModel => viewModel.StartGeneration = (prompt, includeDescription, includeScenario, includeExampleMessages) => GenerateTextForFieldAsync("PersonalityWriter",
+    private void OpenGeneratePersonalityModal() => _windowService.ShowModal<GeneratePersonalityModalViewModel>(viewModel => viewModel.StartGeneration = (prompt, includeDescription, includeScenario, includeExampleMessages) => GenerateTextForFieldAsync("PersonalityWriter",
                                                                                                                                                                                                                                                            prompt,
                                                                                                                                                                                                                                                            value => Personality = value,
                                                                                                                                                                                                                                                            includeDescription,
@@ -616,7 +616,7 @@ public sealed partial class CharacterCardEditorViewModel : ViewModel
                                                                                                                                                                                                                                                            value => IsGeneratingPersonality = value));
 
     [RelayCommand]
-    private void OpenGenerateGreetingModal() => _dialogService.ShowModal<GenerateGreetingModalViewModel>(viewModel => viewModel.StartGeneration = (prompt, includeDescription, includePersonality, includeScenario, includeExampleMessages) =>
+    private void OpenGenerateGreetingModal() => _windowService.ShowModal<GenerateGreetingModalViewModel>(viewModel => viewModel.StartGeneration = (prompt, includeDescription, includePersonality, includeScenario, includeExampleMessages) =>
     {
         GreetingCategory greetingCategory = _greetingCategories[CurrentGreetingCategoryIndex];
         int greetingItemIndex = greetingCategory.ItemIndex;
@@ -684,7 +684,7 @@ public sealed partial class CharacterCardEditorViewModel : ViewModel
     private void ClearGreetings()
     {
         GreetingCategory greetingCategory = _greetingCategories[CurrentGreetingCategoryIndex];
-        _dialogService.ShowModal<ConfirmModalViewModel>(viewModel =>
+        _windowService.ShowModal<ConfirmModalViewModel>(viewModel =>
         {
             viewModel.Message = greetingCategory.ClearModalMessage;
             viewModel.OnConfirmed = () =>
@@ -692,9 +692,9 @@ public sealed partial class CharacterCardEditorViewModel : ViewModel
                 greetingCategory.Items.Clear();
                 if (greetingCategory.MinOneElement) greetingCategory.Items.Add(new());
                 UpdateGreetingProperties();
-                _dialogService.HideModal();
+                _windowService.HideModal();
             };
-            viewModel.OnCancelled = _dialogService.HideModal;
+            viewModel.OnCancelled = _windowService.HideModal;
         });
     }
 
@@ -721,7 +721,7 @@ public sealed partial class CharacterCardEditorViewModel : ViewModel
         }
         catch (Exception exception)
         {
-            _dialogService.ShowNotification(exception.Message, NotificationType.Error, title: "Generation Failed");
+            _windowService.ShowNotification(exception.Message, NotificationType.Error, title: "Generation Failed");
         }
         finally
         {
