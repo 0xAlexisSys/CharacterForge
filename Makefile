@@ -1,5 +1,5 @@
 NAME := CharacterForge
-VERSION ?= 1.0.0
+VERSION ?= 1.1.0
 ICON_EXTENSION := .png
 ICON_FILE := src/CharacterForge.Desktop/Assets/Icon$(ICON_EXTENSION)
 DIST_DIR := .dist
