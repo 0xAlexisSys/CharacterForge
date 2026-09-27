@@ -804,9 +804,10 @@ public sealed partial class CharacterCardEditorViewModel : ViewModel
 
     private async Task GenerateTextForFieldAsync(string systemPromptName, string prompt, Action<string> applyOutput, bool includeDescription, bool includePersonality, bool includeScenario, bool includeExampleMessages, Action<bool> setIsGenerating)
     {
-        setIsGenerating.Invoke(true);
         try
         {
+            setIsGenerating.Invoke(true);
+
             Group output = GeneratedMultiLineTextPattern.Match(await _fieldGeneratorService.GenerateAsync(systemPromptName, "MultiLineText", BuildGenerationInput(includeDescription, includePersonality, includeScenario, includeExampleMessages, prompt))).Groups["Value"];
             if (!output.Success || output.ValueSpan.IsWhiteSpace()) throw new InvalidOperationException("Response did not contain text.");
 
