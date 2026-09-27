@@ -31,7 +31,7 @@ src
 
 ## Building
 
-***.NET 11.0* is required**. If it's not installed on your machine, download it
+**.NET 11.0 is required**. If it's not installed on your machine, download it
 from: https://dotnet.microsoft.com/en-us/download/dotnet/11.0
 
 ```bash
