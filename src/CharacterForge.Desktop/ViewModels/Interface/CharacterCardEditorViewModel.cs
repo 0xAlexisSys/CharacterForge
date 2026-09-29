@@ -4,7 +4,6 @@ using System.Collections.Immutable;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
-using System.Text;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -30,22 +29,6 @@ public sealed partial class CharacterCardEditorViewModel : ViewModel
     private const string TokenCountTextStart = "est. tokens: ";
     private const string ExtensionPrefix = "characterforge_";
     private const string ExtensionIconBytes = $"{ExtensionPrefix}icon_bytes";
-
-    [GeneratedRegex(@"{{user}}|<user>", RegexOptions.CultureInvariant | RegexOptions.IgnoreCase)]
-    private static partial Regex MacroUserPattern { get; }
-
-    // {{bot}} is not part of any specifications and appears to be exclusive to Risuai.
-    [GeneratedRegex(@"{{char}}|{{bot}}|<char>|<bot>", RegexOptions.CultureInvariant | RegexOptions.IgnoreCase)]
-    private static partial Regex MacroCharPattern { get; }
-
-    // While CCv3 defines comment macros as {{comment: A}}, the value and separators
-    // are ignored to match SillyTavern's parser behavior. The hidden_key macro is
-    // treated like the comment macro for consistency here.
-    [GeneratedRegex(@"{{//.*}}|{{hidden_key.*}}|{{comment.*}}", RegexOptions.CultureInvariant | RegexOptions.IgnoreCase)]
-    private static partial Regex MacroCommentPattern { get; }
-
-    [GeneratedRegex(@"{{reverse(?:\s+(?<Value>.+)|:{1,2}(?<Value>.+))}}", RegexOptions.CultureInvariant | RegexOptions.IgnoreCase)]
-    private static partial Regex MacroReversePattern { get; }
 
     private static readonly IReadOnlyList<FilePickerFileType> OpenCharacterCardFileTypes =
     [
@@ -249,11 +232,6 @@ public sealed partial class CharacterCardEditorViewModel : ViewModel
         [nameof(SystemPrompt)] = 0,
         [nameof(PostHistoryInstructions)] = 0,
     };
-
-    /// <remarks>
-    /// <c>***</c> is the default example message separator in <i>SillyTavern</i>.
-    /// </remarks>
-    private static string ApplyMacroExampleMessageStart(string value) => value.Replace("<START>", "***", StringComparison.Ordinal);
 
     public CharacterCardEditorViewModel(Tokenizer tokenizer, FieldGeneratorService fieldGeneratorService, WindowService windowService)
     {
@@ -704,7 +682,7 @@ public sealed partial class CharacterCardEditorViewModel : ViewModel
         try
         {
             IsGeneratingTags = true;
-            string output = await _fieldGeneratorService.GenerateAsync("Tagger", "TagArray", BuildGenerationInput(true, true, true, true, null));
+            string output = await _fieldGeneratorService.GenerateAsync("Tagger", "TagArray", Utilities.BuildUserPromptForGeneration(Name, Description, Personality, Scenario, ExampleMessages, null));
 
             string[] newTags = JsonSerializer.Deserialize<string[]>(output) ?? throw new InvalidOperationException("Response did not contain a JSON string array.");
             if (newTags.Length == 0) throw new InvalidOperationException("Response contained an empty JSON string array.");
@@ -726,16 +704,7 @@ public sealed partial class CharacterCardEditorViewModel : ViewModel
         }
     }
 
-    private string ApplyGeneralMacros(string text)
-    {
-        text = MacroUserPattern.Replace(text, "User");
-        text = MacroCharPattern.Replace(text, Nickname.Length == 0 ? Name : Nickname);
-        text = MacroCommentPattern.Replace(text, string.Empty);
-        text = MacroReversePattern.Replace(text, static match => match.Groups["Value"].Value.ToReverse());
-        return text;
-    }
-
-    private int CountTokens(string text, bool applyMacros) => _tokenizer.CountTokens(!applyMacros ? text : ApplyGeneralMacros(text));
+    private int CountTokens(string text, bool applyMacros) => _tokenizer.CountTokens(!applyMacros ? text : Utilities.ReplaceGeneralMacros(text, (Name, Nickname)));
 
     private void NotifyMacroCharChanged()
     {
@@ -787,25 +756,19 @@ public sealed partial class CharacterCardEditorViewModel : ViewModel
 
     private string GetFieldTokenCountText(string name) => $"{TokenCountTextStart}{_fieldTokenCounts[name]}";
 
-    private string BuildGenerationInput(bool includeDescription, bool includePersonality, bool includeScenario, bool includeExampleMessages, string? prompt)
-    {
-        StringBuilder inputBuilder = new(Constants.CharacterCardMarkdownHeader);
-        inputBuilder.AppendTextBlockWithHeader("Name", Name);
-        if (includeDescription) inputBuilder.AppendTextBlockWithHeader("Description", ApplyGeneralMacros(Description));
-        if (includePersonality) inputBuilder.AppendTextBlockWithHeader("Personality", ApplyGeneralMacros(Personality));
-        if (includeScenario) inputBuilder.AppendTextBlockWithHeader("Scenario", ApplyGeneralMacros(Scenario));
-        if (includeExampleMessages) inputBuilder.AppendTextBlockWithHeader("Example Messages", ApplyMacroExampleMessageStart(ApplyGeneralMacros(ExampleMessages)));
-        if (!string.IsNullOrEmpty(prompt)) inputBuilder.AppendLine($"---\n\n{prompt}");
-        return inputBuilder.ToString().TrimEnd();
-    }
-
     private async Task GenerateTextForFieldAsync(string systemPromptName, string prompt, Action<string> applyOutput, bool includeDescription, bool includePersonality, bool includeScenario, bool includeExampleMessages, Action<bool> setIsGenerating)
     {
         try
         {
             setIsGenerating.Invoke(true);
 
-            Group output = Constants.GeneratedMultiLineTextPattern.Match(await _fieldGeneratorService.GenerateAsync(systemPromptName, "MultiLineText", BuildGenerationInput(includeDescription, includePersonality, includeScenario, includeExampleMessages, prompt))).Groups["Value"];
+            string assistantPrompt = await _fieldGeneratorService.GenerateAsync(systemPromptName, "MultiLineText", Utilities.BuildUserPromptForGeneration(Name,
+                                                                                                                                                          includeDescription ? Description : null,
+                                                                                                                                                          includePersonality ? Personality : null,
+                                                                                                                                                          includeScenario ? Scenario : null,
+                                                                                                                                                          includeExampleMessages ? ExampleMessages : null,
+                                                                                                                                                          prompt));
+            Group output = Constants.GeneratedMultiLineTextPattern.Match(assistantPrompt).Groups["Value"];
             if (!output.Success || output.ValueSpan.IsWhiteSpace()) throw new InvalidOperationException("Response did not contain text.");
 
             applyOutput.Invoke(output.Value.Trim());
@@ -861,7 +824,7 @@ public sealed partial class CharacterCardEditorViewModel : ViewModel
         }
     }
 
-    partial void OnExampleMessagesChanged(string value) => _fieldTokenCounts[nameof(ExampleMessages)] = CountTokens(ApplyMacroExampleMessageStart(value), true);
+    partial void OnExampleMessagesChanged(string value) => _fieldTokenCounts[nameof(ExampleMessages)] = CountTokens(Utilities.ReplaceMacroExampleMessageStart(value), true);
 
     partial void OnSystemPromptChanged(string value) => _fieldTokenCounts[nameof(SystemPrompt)] = CountTokens(value, true);
 
