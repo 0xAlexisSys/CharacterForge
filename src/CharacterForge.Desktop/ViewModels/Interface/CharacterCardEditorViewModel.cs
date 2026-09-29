@@ -47,9 +47,6 @@ public sealed partial class CharacterCardEditorViewModel : ViewModel
     [GeneratedRegex(@"{{reverse(?:\s+(?<Value>.+)|:{1,2}(?<Value>.+))}}", RegexOptions.CultureInvariant | RegexOptions.IgnoreCase)]
     private static partial Regex MacroReversePattern { get; }
 
-    [GeneratedRegex(@"```plaintext\n(?<Value>.+)\n```", RegexOptions.CultureInvariant | RegexOptions.Singleline)]
-    private static partial Regex GeneratedMultiLineTextPattern { get; }
-
     private static readonly IReadOnlyList<FilePickerFileType> OpenCharacterCardFileTypes =
     [
         new("Character Card")
@@ -808,7 +805,7 @@ public sealed partial class CharacterCardEditorViewModel : ViewModel
         {
             setIsGenerating.Invoke(true);
 
-            Group output = GeneratedMultiLineTextPattern.Match(await _fieldGeneratorService.GenerateAsync(systemPromptName, "MultiLineText", BuildGenerationInput(includeDescription, includePersonality, includeScenario, includeExampleMessages, prompt))).Groups["Value"];
+            Group output = Constants.GeneratedMultiLineTextPattern.Match(await _fieldGeneratorService.GenerateAsync(systemPromptName, "MultiLineText", BuildGenerationInput(includeDescription, includePersonality, includeScenario, includeExampleMessages, prompt))).Groups["Value"];
             if (!output.Success || output.ValueSpan.IsWhiteSpace()) throw new InvalidOperationException("Response did not contain text.");
 
             applyOutput.Invoke(output.Value.Trim());
