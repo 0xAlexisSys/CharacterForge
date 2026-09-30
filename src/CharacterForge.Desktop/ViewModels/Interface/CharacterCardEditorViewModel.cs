@@ -451,7 +451,7 @@ public sealed partial class CharacterCardEditorViewModel : ViewModel
                 Properties = new()
                 {
                     Name = Name,
-                    Nickname = string.IsNullOrWhiteSpace(Nickname) ? null : Nickname,
+                    Nickname = Nickname,
                     CreatorName = CreatorName,
                     Version = Version,
                     Personality = Personality,
@@ -504,7 +504,7 @@ public sealed partial class CharacterCardEditorViewModel : ViewModel
             Properties = new()
             {
                 Name = Name,
-                Nickname = string.IsNullOrWhiteSpace(Nickname) ? null : Nickname,
+                Nickname = Nickname,
                 CreatorName = CreatorName,
                 Version = Version,
                 Personality = Personality,
