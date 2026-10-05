@@ -87,11 +87,18 @@
                 <StackPanel Classes="editorTab">
                     <StackPanel Classes="field">
                         <DockPanel Classes="header">
-                            <Button ToolTip.Tip="Generate Description"
-                                    IsEnabled="{Binding CanGenerateDescription}"
-                                    Classes="icon iconMagic"
-                                    Content="{icons:MaterialIconExt Kind=Magic}"
-                                    Command="{Binding OpenGenerateDescriptionModalCommand}"/>
+                            <StackPanel Classes="buttons">
+                                <Button ToolTip.Tip="Refine Description"
+                                        IsEnabled="{Binding CanRefineDescription}"
+                                        Classes="icon iconMagicWand"
+                                        Content="{icons:MaterialIconExt Kind=MagicWand}"
+                                        Command="{Binding OpenRefineDescriptionModalCommand}"/>
+                                <Button ToolTip.Tip="Generate Description"
+                                        IsEnabled="{Binding CanGenerateDescription}"
+                                        Classes="icon iconMagic"
+                                        Content="{icons:MaterialIconExt Kind=Magic}"
+                                        Command="{Binding OpenGenerateDescriptionModalCommand}"/>
+                            </StackPanel>
 
                             <TextBlock Classes="label"
                                        Text="Description"/>
@@ -109,11 +116,18 @@
                                  ColumnSpacing="16.0">
                         <StackPanel Classes="field">
                             <DockPanel Classes="header">
-                                <Button ToolTip.Tip="Generate Personality"
-                                        IsEnabled="{Binding CanGeneratePersonality}"
-                                        Classes="icon iconMagic"
-                                        Content="{icons:MaterialIconExt Kind=Magic}"
-                                        Command="{Binding OpenGeneratePersonalityModalCommand}"/>
+                                <StackPanel Classes="buttons">
+                                    <Button ToolTip.Tip="Refine Personality"
+                                            IsEnabled="{Binding CanRefinePersonality}"
+                                            Classes="icon iconMagicWand"
+                                            Content="{icons:MaterialIconExt Kind=MagicWand}"
+                                            Command="{Binding OpenRefinePersonalityModalCommand}"/>
+                                    <Button ToolTip.Tip="Generate Personality"
+                                            IsEnabled="{Binding CanGeneratePersonality}"
+                                            Classes="icon iconMagic"
+                                            Content="{icons:MaterialIconExt Kind=Magic}"
+                                            Command="{Binding OpenGeneratePersonalityModalCommand}"/>
+                                </StackPanel>
 
                                 <TextBlock Classes="label"
                                            Text="Personality"/>
@@ -128,12 +142,18 @@
                         </StackPanel>
 
                         <StackPanel Classes="field">
-                            <StackPanel Classes="header">
+                            <DockPanel Classes="header">
+                                <Button ToolTip.Tip="Refine Scenario"
+                                        IsEnabled="{Binding CanRefineScenario}"
+                                        Classes="icon iconMagicWand"
+                                        Content="{icons:MaterialIconExt Kind=MagicWand}"
+                                        Command="{Binding OpenRefineScenarioModalCommand}"/>
+
                                 <TextBlock Classes="label"
                                            Text="Scenario"/>
                                 <TextBlock Classes="sublabel"
                                            Text="{Binding ScenarioTokenCountText}"/>
-                            </StackPanel>
+                            </DockPanel>
                             <TextBox Text="{Binding Scenario}"
                                      TextWrapping="Wrap"
                                      AcceptsReturn="True"
@@ -196,6 +216,11 @@
                                         Classes="icon iconDeleteSweep"
                                         Content="{icons:MaterialIconExt Kind=DeleteSweep}"
                                         Command="{Binding ClearGreetingsCommand}"/>
+                                <Button ToolTip.Tip="Refine Greeting"
+                                        IsEnabled="{Binding CanRefineGreeting}"
+                                        Classes="icon iconMagicWand"
+                                        Content="{icons:MaterialIconExt Kind=MagicWand}"
+                                        Command="{Binding OpenRefineGreetingModalCommand}"/>
                                 <Button ToolTip.Tip="Generate Greeting"
                                         IsEnabled="{Binding CanGenerateGreeting}"
                                         Classes="icon iconMagic"

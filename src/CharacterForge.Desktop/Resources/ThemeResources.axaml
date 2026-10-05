@@ -58,6 +58,9 @@
     <Color x:Key="IconMagicColor">#FFC084FC</Color>
     <SolidColorBrush x:Key="IconMagicBrush" Color="{StaticResource IconMagicColor}"/>
 
+    <Color x:Key="IconMagicWandColor">#FF38BDF8</Color>
+    <SolidColorBrush x:Key="IconMagicWandBrush" Color="{StaticResource IconMagicWandColor}"/>
+
     <Color x:Key="IconNavigateColor">#FFA0A8C4</Color>
     <SolidColorBrush x:Key="IconNavigateBrush" Color="{StaticResource IconNavigateColor}"/>
 
