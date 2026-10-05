@@ -38,13 +38,14 @@ public static partial class Utilities
     /// </remarks>
     public static string ReplaceMacroExampleMessageStart(string value) => value.Replace("<START>", "***", StringComparison.Ordinal);
 
-    public static string BuildUserPromptForGeneration(string name, string? description, string? personality, string? scenario, string? exampleMessages, string? prompt)
+    public static string BuildUserPromptForGeneration(string name, string? description, string? personality, string? scenario, string? exampleMessages, string? greeting, string? prompt)
     {
         name = name.Trim();
         description = description?.Trim();
         personality = personality?.Trim();
         scenario = scenario?.Trim();
         exampleMessages = exampleMessages?.Trim();
+        greeting = greeting?.Trim();
         prompt = prompt?.Trim();
 
         NameData nameData = (name, null);
@@ -55,6 +56,7 @@ public static partial class Utilities
         if (!string.IsNullOrEmpty(personality)) inputBuilder.AppendTextBlockWithHeader("Personality", ReplaceGeneralMacros(personality, nameData));
         if (!string.IsNullOrEmpty(scenario)) inputBuilder.AppendTextBlockWithHeader("Scenario", ReplaceGeneralMacros(scenario, nameData));
         if (!string.IsNullOrEmpty(exampleMessages)) inputBuilder.AppendTextBlockWithHeader("Example Messages", ReplaceMacroExampleMessageStart(ReplaceGeneralMacros(exampleMessages, nameData)));
+        if (!string.IsNullOrEmpty(greeting)) inputBuilder.AppendTextBlockWithHeader("Greeting", ReplaceGeneralMacros(greeting, nameData));
         if (!string.IsNullOrEmpty(prompt)) inputBuilder.AppendLine($"---\n\n{prompt}");
         return inputBuilder.ToString().TrimEnd();
     }

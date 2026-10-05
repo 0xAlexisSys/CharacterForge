@@ -59,6 +59,10 @@ public sealed partial class CharacterCardEditorViewModel : ViewModel
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(NameTokenCountText))]
+    [NotifyPropertyChangedFor(nameof(CanRefineDescription))]
+    [NotifyPropertyChangedFor(nameof(CanRefinePersonality))]
+    [NotifyPropertyChangedFor(nameof(CanRefineScenario))]
+    [NotifyPropertyChangedFor(nameof(CanRefineGreeting))]
     [NotifyPropertyChangedFor(nameof(CanGenerateDescription))]
     [NotifyPropertyChangedFor(nameof(CanGeneratePersonality))]
     [NotifyPropertyChangedFor(nameof(CanGenerateGreeting))]
@@ -71,6 +75,7 @@ public sealed partial class CharacterCardEditorViewModel : ViewModel
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(DescriptionTokenCountText))]
+    [NotifyPropertyChangedFor(nameof(CanRefineDescription))]
     [NotifyPropertyChangedFor(nameof(CanGenerateIconPrompt))]
     [NotifyPropertyChangedFor(nameof(CanGeneratePersonality))]
     [NotifyPropertyChangedFor(nameof(CanGenerateTags))]
@@ -78,10 +83,12 @@ public sealed partial class CharacterCardEditorViewModel : ViewModel
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(PersonalityTokenCountText))]
+    [NotifyPropertyChangedFor(nameof(CanRefinePersonality))]
     public partial string Personality { get; set; } = string.Empty;
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(ScenarioTokenCountText))]
+    [NotifyPropertyChangedFor(nameof(CanRefineScenario))]
     public partial string Scenario { get; set; } = string.Empty;
 
     [ObservableProperty]
@@ -89,6 +96,7 @@ public sealed partial class CharacterCardEditorViewModel : ViewModel
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(GreetingTokenCountText))]
+    [NotifyPropertyChangedFor(nameof(CanRefineGreeting))]
     public partial string CurrentGreeting { get; set; } = string.Empty;
 
     [ObservableProperty]
@@ -117,18 +125,37 @@ public sealed partial class CharacterCardEditorViewModel : ViewModel
     public partial string CurrentCreatorNotes { get; set; } = string.Empty;
 
     [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(CanRefineDescription))]
+    public partial bool IsRefiningDescription { get; set; }
+
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(CanRefinePersonality))]
+    public partial bool IsRefiningPersonality { get; set; }
+
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(CanRefineScenario))]
+    public partial bool IsRefiningScenario { get; set; }
+
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(CanRefineGreeting))]
+    public partial bool IsRefiningGreeting { get; set; }
+
+    [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(CanGenerateIconPrompt))]
     public partial bool IsGeneratingIconPrompt { get; set; }
 
     [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(CanRefineDescription))]
     [NotifyPropertyChangedFor(nameof(CanGenerateDescription))]
     public partial bool IsGeneratingDescription { get; set; }
 
     [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(CanRefinePersonality))]
     [NotifyPropertyChangedFor(nameof(CanGeneratePersonality))]
     public partial bool IsGeneratingPersonality { get; set; }
 
     [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(CanRefineGreeting))]
     [NotifyPropertyChangedFor(nameof(CanGenerateGreeting))]
     public partial bool IsGeneratingGreeting { get; set; }
 
@@ -199,10 +226,14 @@ public sealed partial class CharacterCardEditorViewModel : ViewModel
     }
 
     public bool CanClearGreetings { get => IsEditingStandardGreetings || _greetingCategories[CurrentGreetingCategoryIndex].Items.Count != 0; }
+    public bool CanRefineDescription { get => !Name.IsWhiteSpace() && !Description.IsWhiteSpace() && !IsRefiningDescription && !IsGeneratingDescription; }
+    public bool CanRefinePersonality { get => !Name.IsWhiteSpace() && !Personality.IsWhiteSpace() && !IsRefiningPersonality && !IsGeneratingPersonality; }
+    public bool CanRefineScenario { get => !Name.IsWhiteSpace() && !Scenario.IsWhiteSpace() && !IsRefiningScenario; }
+    public bool CanRefineGreeting { get => !Name.IsWhiteSpace() && !CurrentGreeting.IsWhiteSpace() && !ShowAddGroupOnlyGreetingPrompt && !IsRefiningGreeting && !IsGeneratingGreeting; }
     public bool CanGenerateIconPrompt { get => !Name.IsWhiteSpace() && !Description.IsWhiteSpace() && !IsGeneratingIconPrompt; }
-    public bool CanGenerateDescription { get => !Name.IsWhiteSpace() && !IsGeneratingDescription; }
-    public bool CanGeneratePersonality { get => !Name.IsWhiteSpace() && (!Description.IsWhiteSpace() || !ExampleMessages.IsWhiteSpace()) && !IsGeneratingPersonality; }
-    public bool CanGenerateGreeting { get => !Name.IsWhiteSpace() && !IsGeneratingGreeting; }
+    public bool CanGenerateDescription { get => !Name.IsWhiteSpace() && !IsRefiningDescription && !IsGeneratingDescription; }
+    public bool CanGeneratePersonality { get => !Name.IsWhiteSpace() && (!Description.IsWhiteSpace() || !ExampleMessages.IsWhiteSpace()) && !IsRefiningPersonality && !IsGeneratingPersonality; }
+    public bool CanGenerateGreeting { get => !Name.IsWhiteSpace() && !IsRefiningGreeting && !IsGeneratingGreeting; }
     public bool CanGenerateTags { get => !Name.IsWhiteSpace() && !Description.IsWhiteSpace() && !IsGeneratingTags; }
 
     private readonly Tokenizer _tokenizer;
@@ -568,6 +599,79 @@ public sealed partial class CharacterCardEditorViewModel : ViewModel
     });
 
     [RelayCommand]
+    private void OpenRefineDescriptionModal() => _windowService.ShowModal<RefineFieldModalViewModel>(viewModel =>
+    {
+        viewModel.Title = "Refine Description";
+        viewModel.ShowDescriptionCheckBox = false;
+        viewModel.StartRefinement = (prompt, _, includePersonality, includeScenario, includeExampleMessages) => GenerateTextForFieldAsync("DescriptionRefiner",
+                                                                                                                                          prompt,
+                                                                                                                                          value => Description = value,
+                                                                                                                                          true,
+                                                                                                                                          includePersonality,
+                                                                                                                                          includeScenario,
+                                                                                                                                          includeExampleMessages,
+                                                                                                                                          value => IsRefiningDescription = value);
+    });
+
+    [RelayCommand]
+    private void OpenRefinePersonalityModal() => _windowService.ShowModal<RefineFieldModalViewModel>(viewModel =>
+    {
+        viewModel.Title = "Refine Personality";
+        viewModel.ShowPersonalityCheckBox = false;
+        viewModel.StartRefinement = (prompt, includeDescription, _, includeScenario, includeExampleMessages) => GenerateTextForFieldAsync("PersonalityRefiner",
+                                                                                                                                          prompt,
+                                                                                                                                          value => Personality = value,
+                                                                                                                                          includeDescription,
+                                                                                                                                          true,
+                                                                                                                                          includeScenario,
+                                                                                                                                          includeExampleMessages,
+                                                                                                                                          value => IsRefiningPersonality = value);
+    });
+
+    [RelayCommand]
+    private void OpenRefineScenarioModal() => _windowService.ShowModal<RefineFieldModalViewModel>(viewModel =>
+    {
+        viewModel.Title = "Refine Scenario";
+        viewModel.ShowScenarioCheckBox = false;
+        viewModel.StartRefinement = (prompt, includeDescription, includePersonality, _, includeExampleMessages) => GenerateTextForFieldAsync("ScenarioRefiner",
+                                                                                                                                             prompt,
+                                                                                                                                             value => Scenario = value,
+                                                                                                                                             includeDescription,
+                                                                                                                                             includePersonality,
+                                                                                                                                             true,
+                                                                                                                                             includeExampleMessages,
+                                                                                                                                             value => IsRefiningScenario = value);
+    });
+
+    [RelayCommand]
+    private void OpenRefineGreetingModal() => _windowService.ShowModal<RefineFieldModalViewModel>(viewModel =>
+    {
+        viewModel.Title = "Refine Greeting";
+        viewModel.StartRefinement = (prompt, includeDescription, includePersonality, includeScenario, includeExampleMessages) =>
+        {
+            GreetingCategory greetingCategory = _greetingCategories[CurrentGreetingCategoryIndex];
+            int greetingItemIndex = greetingCategory.ItemIndex;
+            return GenerateTextForFieldAsync("GreetingRefiner",
+                                             prompt,
+                                             value =>
+                                             {
+                                                 if (greetingItemIndex > greetingCategory.Items.Count - 1) greetingCategory.Items.Add(new());
+
+                                                 GreetingItem greetingItem = greetingCategory.Items[greetingItemIndex];
+                                                 greetingItem.Text = value;
+                                                 greetingItem.Tokens = CountTokens(greetingItem.Text, true);
+                                                 UpdateGreetingProperties();
+                                             },
+                                             includeDescription,
+                                             includePersonality,
+                                             includeScenario,
+                                             includeExampleMessages,
+                                             value => IsRefiningGreeting = value,
+                                             includeGreeting: true);
+        };
+    });
+
+    [RelayCommand]
     private void OpenGenerateIconPromptModal() => _windowService.ShowModal<GenerateIconPromptModalViewModel>();
 
     [RelayCommand]
@@ -682,7 +786,13 @@ public sealed partial class CharacterCardEditorViewModel : ViewModel
         try
         {
             IsGeneratingTags = true;
-            string output = await _fieldGeneratorService.GenerateAsync("Tagger", "TagArray", Utilities.BuildUserPromptForGeneration(Name, Description, Personality, Scenario, ExampleMessages, null));
+            string output = await _fieldGeneratorService.GenerateAsync("Tagger", "TagArray", Utilities.BuildUserPromptForGeneration(Name,
+                                                                                                                                    Description,
+                                                                                                                                    Personality,
+                                                                                                                                    Scenario,
+                                                                                                                                    ExampleMessages,
+                                                                                                                                    null,
+                                                                                                                                    null));
 
             string[] newTags = JsonSerializer.Deserialize<string[]>(output) ?? throw new InvalidOperationException("Response did not contain a JSON string array.");
             if (newTags.Length == 0) throw new InvalidOperationException("Response contained an empty JSON string array.");
@@ -750,13 +860,14 @@ public sealed partial class CharacterCardEditorViewModel : ViewModel
         OnPropertyChanged(nameof(CanGoToNextGreeting));
         OnPropertyChanged(nameof(CanRemoveGreeting));
         OnPropertyChanged(nameof(CanClearGreetings));
+        OnPropertyChanged(nameof(CanRefineGreeting));
     }
 
     private void LoadCreatorNotesForLanguage(string languageCode) => CurrentCreatorNotes = _creatorNotes.TryGetValue(languageCode, out string? text) ? text : string.Empty;
 
     private string GetFieldTokenCountText(string name) => $"{TokenCountTextStart}{_fieldTokenCounts[name]}";
 
-    private async Task GenerateTextForFieldAsync(string systemPromptName, string prompt, Action<string> applyOutput, bool includeDescription, bool includePersonality, bool includeScenario, bool includeExampleMessages, Action<bool> setIsGenerating)
+    private async Task GenerateTextForFieldAsync(string systemPromptName, string prompt, Action<string> applyOutput, bool includeDescription, bool includePersonality, bool includeScenario, bool includeExampleMessages, Action<bool> setIsGenerating, bool includeGreeting = false)
     {
         try
         {
@@ -767,6 +878,7 @@ public sealed partial class CharacterCardEditorViewModel : ViewModel
                                                                                                                                                           includePersonality ? Personality : null,
                                                                                                                                                           includeScenario ? Scenario : null,
                                                                                                                                                           includeExampleMessages ? ExampleMessages : null,
+                                                                                                                                                          includeGreeting ? CurrentGreeting : null,
                                                                                                                                                           prompt));
             Group output = Constants.GeneratedMultiLineTextPattern.Match(assistantPrompt).Groups["Value"];
             if (!output.Success || output.ValueSpan.IsWhiteSpace()) throw new InvalidOperationException("Response did not contain text.");

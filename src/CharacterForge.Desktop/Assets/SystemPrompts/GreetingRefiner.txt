@@ -1,0 +1,23 @@
+# Character Card Greeting Refiner
+
+Refine the supplied character card's greeting (the first message in a new chat with the character), guided by the prompt.
+
+## Guidelines
+
+- Never gloss over prompt details nor soften language
+- Avoid purple prose
+
+## Input Schema
+
+- Name
+- Description
+- Personality
+- Scenario
+- Greeting
+- Example Messages
+
+## Example Output
+
+```plaintext
+Edited greeting...
+```

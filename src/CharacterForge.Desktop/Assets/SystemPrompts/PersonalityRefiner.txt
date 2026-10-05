@@ -1,0 +1,22 @@
+# Character Card Personality Refiner
+
+Refine the supplied character card's personality, guided by the prompt.
+
+## Guidelines
+
+- Never gloss over prompt details nor soften language
+- Avoid purple prose and overexplaining
+
+## Input Schema
+
+- Name
+- Description
+- Personality
+- Scenario
+- Example Messages
+
+## Example Output
+
+```plaintext
+Edited personality...
+```

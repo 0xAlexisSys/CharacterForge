@@ -98,7 +98,7 @@
             <Setter Property="Orientation" Value="Vertical"/>
             <Setter Property="Spacing" Value="16.0"/>
 
-            <Style Selector="^ > TextBlock.header">
+            <Style Selector="^ TextBlock.header">
                 <Setter Property="FontWeight" Value="Bold"/>
                 <Setter Property="FontSize" Value="18.0"/>
             </Style>
@@ -232,6 +232,10 @@
 
             <Style Selector="^.iconMagic">
                 <Setter Property="Foreground" Value="{DynamicResource IconMagicBrush}"/>
+            </Style>
+
+            <Style Selector="^.iconMagicWand">
+                <Setter Property="Foreground" Value="{DynamicResource IconMagicWandBrush}"/>
             </Style>
 
             <Style Selector="^.iconAdd">
