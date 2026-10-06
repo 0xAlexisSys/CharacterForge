@@ -9,10 +9,10 @@ using JetBrains.Annotations;
 namespace CharacterForge.Desktop.ViewModels;
 
 [UsedImplicitly]
-public sealed partial class RefineFieldModalViewModel : ViewModel
+public sealed partial class GenerateFieldModalViewModel : ViewModel
 {
     [ObservableProperty]
-    public partial string Title { get; set; } = "Refine Field";
+    public partial string Title { get; set; } = "Generate Field";
 
     [ObservableProperty]
     public partial bool ShowDescriptionCheckBox { get; set; } = true;
@@ -51,20 +51,23 @@ public sealed partial class RefineFieldModalViewModel : ViewModel
     public partial bool IncludeExampleMessages { get; set; }
 
     [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(CanRefine))]
+    [NotifyPropertyChangedFor(nameof(CanGenerate))]
     public partial string Prompt { get; set; } = string.Empty;
 
     [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(CanRefine))]
-    public partial bool IsRefining { get; set; }
+    public partial bool IsPromptRequired { get; set; } = true;
 
-    public bool CanRefine { get => !IsRefining && !Prompt.IsWhiteSpace(); }
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(CanGenerate))]
+    public partial bool IsGenerating { get; set; } = false;
 
-    public Func<string, bool, bool, bool, bool, Task>? StartRefinement;
+    public bool CanGenerate { get => !IsGenerating && (!IsPromptRequired || !Prompt.IsWhiteSpace()); }
+
+    public Func<string, bool, bool, bool, bool, Task>? StartGeneration;
 
     private readonly WindowService _windowService;
 
-    public RefineFieldModalViewModel(WindowService windowService, CharacterCardEditorViewModel characterCardEditorViewModel)
+    public GenerateFieldModalViewModel(WindowService windowService, CharacterCardEditorViewModel characterCardEditorViewModel)
     {
         _windowService = windowService;
 
@@ -84,21 +87,21 @@ public sealed partial class RefineFieldModalViewModel : ViewModel
     [RelayCommand]
     private async Task Refine()
     {
-        if (StartRefinement is not null && CanRefine)
+        if (StartGeneration is not null && CanGenerate)
         {
             try
             {
-                IsRefining = true;
-                await StartRefinement.Invoke(Prompt, IncludeDescription, IncludePersonality, IncludeScenario, IncludeExampleMessages);
+                IsGenerating = true;
+                await StartGeneration.Invoke(Prompt, IncludeDescription, IncludePersonality, IncludeScenario, IncludeExampleMessages);
                 _windowService.HideModal();
             }
             catch (Exception exception)
             {
-                _windowService.ShowNotification(exception.Message, NotificationType.Error, title: "Refinement Failed");
+                _windowService.ShowNotification(exception.Message, NotificationType.Error, title: "Generation Failed");
             }
             finally
             {
-                IsRefining = false;
+                IsGenerating = false;
             }
         }
     }

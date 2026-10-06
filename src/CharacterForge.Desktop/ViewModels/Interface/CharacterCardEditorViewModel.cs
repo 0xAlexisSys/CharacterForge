@@ -599,11 +599,11 @@ public sealed partial class CharacterCardEditorViewModel : ViewModel
     });
 
     [RelayCommand]
-    private void OpenRefineDescriptionModal() => _windowService.ShowModal<RefineFieldModalViewModel>(viewModel =>
+    private void OpenRefineDescriptionModal() => _windowService.ShowModal<GenerateFieldModalViewModel>(viewModel =>
     {
         viewModel.Title = "Refine Description";
         viewModel.ShowDescriptionCheckBox = false;
-        viewModel.StartRefinement = (prompt, _, includePersonality, includeScenario, includeExampleMessages) => GenerateTextForFieldAsync("DescriptionRefiner",
+        viewModel.StartGeneration = (prompt, _, includePersonality, includeScenario, includeExampleMessages) => GenerateTextForFieldAsync("DescriptionRefiner",
                                                                                                                                           prompt,
                                                                                                                                           value => Description = value,
                                                                                                                                           true,
@@ -614,11 +614,11 @@ public sealed partial class CharacterCardEditorViewModel : ViewModel
     });
 
     [RelayCommand]
-    private void OpenRefinePersonalityModal() => _windowService.ShowModal<RefineFieldModalViewModel>(viewModel =>
+    private void OpenRefinePersonalityModal() => _windowService.ShowModal<GenerateFieldModalViewModel>(viewModel =>
     {
         viewModel.Title = "Refine Personality";
         viewModel.ShowPersonalityCheckBox = false;
-        viewModel.StartRefinement = (prompt, includeDescription, _, includeScenario, includeExampleMessages) => GenerateTextForFieldAsync("PersonalityRefiner",
+        viewModel.StartGeneration = (prompt, includeDescription, _, includeScenario, includeExampleMessages) => GenerateTextForFieldAsync("PersonalityRefiner",
                                                                                                                                           prompt,
                                                                                                                                           value => Personality = value,
                                                                                                                                           includeDescription,
@@ -629,11 +629,11 @@ public sealed partial class CharacterCardEditorViewModel : ViewModel
     });
 
     [RelayCommand]
-    private void OpenRefineScenarioModal() => _windowService.ShowModal<RefineFieldModalViewModel>(viewModel =>
+    private void OpenRefineScenarioModal() => _windowService.ShowModal<GenerateFieldModalViewModel>(viewModel =>
     {
         viewModel.Title = "Refine Scenario";
         viewModel.ShowScenarioCheckBox = false;
-        viewModel.StartRefinement = (prompt, includeDescription, includePersonality, _, includeExampleMessages) => GenerateTextForFieldAsync("ScenarioRefiner",
+        viewModel.StartGeneration = (prompt, includeDescription, includePersonality, _, includeExampleMessages) => GenerateTextForFieldAsync("ScenarioRefiner",
                                                                                                                                              prompt,
                                                                                                                                              value => Scenario = value,
                                                                                                                                              includeDescription,
@@ -644,10 +644,10 @@ public sealed partial class CharacterCardEditorViewModel : ViewModel
     });
 
     [RelayCommand]
-    private void OpenRefineGreetingModal() => _windowService.ShowModal<RefineFieldModalViewModel>(viewModel =>
+    private void OpenRefineGreetingModal() => _windowService.ShowModal<GenerateFieldModalViewModel>(viewModel =>
     {
         viewModel.Title = "Refine Greeting";
-        viewModel.StartRefinement = (prompt, includeDescription, includePersonality, includeScenario, includeExampleMessages) =>
+        viewModel.StartGeneration = (prompt, includeDescription, includePersonality, includeScenario, includeExampleMessages) =>
         {
             GreetingCategory greetingCategory = _greetingCategories[CurrentGreetingCategoryIndex];
             int greetingItemIndex = greetingCategory.ItemIndex;
@@ -675,46 +675,61 @@ public sealed partial class CharacterCardEditorViewModel : ViewModel
     private void OpenGenerateIconPromptModal() => _windowService.ShowModal<GenerateIconPromptModalViewModel>();
 
     [RelayCommand]
-    private void OpenGenerateDescriptionModal() => _windowService.ShowModal<GenerateDescriptionModalViewModel>(viewModel => viewModel.StartGeneration = (prompt, includePersonality, includeScenario, includeExampleMessages) => GenerateTextForFieldAsync("DescriptionWriter",
-                                                                                                                                                                                                                                                           prompt,
-                                                                                                                                                                                                                                                           value => Description = value,
-                                                                                                                                                                                                                                                           false,
-                                                                                                                                                                                                                                                           includePersonality,
-                                                                                                                                                                                                                                                           includeScenario,
-                                                                                                                                                                                                                                                           includeExampleMessages,
-                                                                                                                                                                                                                                                           value => IsGeneratingDescription = value));
-
-    [RelayCommand]
-    private void OpenGeneratePersonalityModal() => _windowService.ShowModal<GeneratePersonalityModalViewModel>(viewModel => viewModel.StartGeneration = (prompt, includeDescription, includeScenario, includeExampleMessages) => GenerateTextForFieldAsync("PersonalityWriter",
-                                                                                                                                                                                                                                                           prompt,
-                                                                                                                                                                                                                                                           value => Personality = value,
-                                                                                                                                                                                                                                                           includeDescription,
-                                                                                                                                                                                                                                                           false,
-                                                                                                                                                                                                                                                           includeScenario,
-                                                                                                                                                                                                                                                           includeExampleMessages,
-                                                                                                                                                                                                                                                           value => IsGeneratingPersonality = value));
-
-    [RelayCommand]
-    private void OpenGenerateGreetingModal() => _windowService.ShowModal<GenerateGreetingModalViewModel>(viewModel => viewModel.StartGeneration = (prompt, includeDescription, includePersonality, includeScenario, includeExampleMessages) =>
+    private void OpenGenerateDescriptionModal() => _windowService.ShowModal<GenerateFieldModalViewModel>(viewModel =>
     {
-        GreetingCategory greetingCategory = _greetingCategories[CurrentGreetingCategoryIndex];
-        int greetingItemIndex = greetingCategory.ItemIndex;
-        return GenerateTextForFieldAsync("GreetingWriter",
-                                         prompt,
-                                         value =>
-                                         {
-                                             if (greetingItemIndex > greetingCategory.Items.Count - 1) greetingCategory.Items.Add(new());
+        viewModel.Title = "Generate Description";
+        viewModel.ShowDescriptionCheckBox = false;
+        viewModel.StartGeneration = (prompt, _, includePersonality, includeScenario, includeExampleMessages) => GenerateTextForFieldAsync("DescriptionWriter",
+                                                                                                                                          prompt,
+                                                                                                                                          value => Description = value,
+                                                                                                                                          false,
+                                                                                                                                          includePersonality,
+                                                                                                                                          includeScenario,
+                                                                                                                                          includeExampleMessages,
+                                                                                                                                          value => IsGeneratingDescription = value);
+    });
 
-                                             GreetingItem greetingItem = greetingCategory.Items[greetingItemIndex];
-                                             greetingItem.Text = value;
-                                             greetingItem.Tokens = CountTokens(greetingItem.Text, true);
-                                             UpdateGreetingProperties();
-                                         },
-                                         includeDescription,
-                                         includePersonality,
-                                         includeScenario,
-                                         includeExampleMessages,
-                                         value => IsGeneratingGreeting = value);
+    [RelayCommand]
+    private void OpenGeneratePersonalityModal() => _windowService.ShowModal<GenerateFieldModalViewModel>(viewModel =>
+    {
+        viewModel.Title = "Generate Personality";
+        viewModel.ShowPersonalityCheckBox = false;
+        viewModel.IsPromptRequired = false;
+        viewModel.StartGeneration = (prompt, includeDescription, _, includeScenario, includeExampleMessages) => GenerateTextForFieldAsync("PersonalityWriter",
+                                                                                                                                          prompt,
+                                                                                                                                          value => Personality = value,
+                                                                                                                                          includeDescription,
+                                                                                                                                          false,
+                                                                                                                                          includeScenario,
+                                                                                                                                          includeExampleMessages,
+                                                                                                                                          value => IsGeneratingPersonality = value);
+    });
+
+    [RelayCommand]
+    private void OpenGenerateGreetingModal() => _windowService.ShowModal<GenerateFieldModalViewModel>(viewModel =>
+    {
+        viewModel.Title = "Generate Greeting";
+        viewModel.StartGeneration = (prompt, includeDescription, includePersonality, includeScenario, includeExampleMessages) =>
+        {
+            GreetingCategory greetingCategory = _greetingCategories[CurrentGreetingCategoryIndex];
+            int greetingItemIndex = greetingCategory.ItemIndex;
+            return GenerateTextForFieldAsync("GreetingWriter",
+                                             prompt,
+                                             value =>
+                                             {
+                                                 if (greetingItemIndex > greetingCategory.Items.Count - 1) greetingCategory.Items.Add(new());
+
+                                                 GreetingItem greetingItem = greetingCategory.Items[greetingItemIndex];
+                                                 greetingItem.Text = value;
+                                                 greetingItem.Tokens = CountTokens(greetingItem.Text, true);
+                                                 UpdateGreetingProperties();
+                                             },
+                                             includeDescription,
+                                             includePersonality,
+                                             includeScenario,
+                                             includeExampleMessages,
+                                             value => IsGeneratingGreeting = value);
+        };
     });
 
     [RelayCommand]

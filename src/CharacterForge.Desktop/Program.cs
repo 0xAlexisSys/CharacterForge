@@ -37,11 +37,8 @@ public static class Program
                 .AddTransientViewAndViewModel<AcceptModalView, AcceptModalViewModel>()
                 .AddTransientViewAndViewModel<ConfirmModalView, ConfirmModalViewModel>()
                 .AddTransientViewAndViewModel<InspectModalView, InspectModalViewModel>()
-                .AddTransientViewAndViewModel<RefineFieldModalView, RefineFieldModalViewModel>()
-                .AddTransientViewAndViewModel<GenerateIconPromptModalView, GenerateIconPromptModalViewModel>()
-                .AddTransientViewAndViewModel<GenerateDescriptionModalView, GenerateDescriptionModalViewModel>()
-                .AddTransientViewAndViewModel<GeneratePersonalityModalView, GeneratePersonalityModalViewModel>()
-                .AddTransientViewAndViewModel<GenerateGreetingModalView, GenerateGreetingModalViewModel>();
+                .AddTransientViewAndViewModel<GenerateFieldModalView, GenerateFieldModalViewModel>()
+                .AddTransientViewAndViewModel<GenerateIconPromptModalView, GenerateIconPromptModalViewModel>();
         _serviceProvider = services.BuildServiceProvider();
     }
 
