@@ -232,7 +232,7 @@ public sealed partial class CharacterCardEditorViewModel : ViewModel
     public bool CanRefineGreeting { get => !Name.IsWhiteSpace() && !CurrentGreeting.IsWhiteSpace() && !ShowAddGroupOnlyGreetingPrompt && !IsRefiningGreeting && !IsGeneratingGreeting; }
     public bool CanGenerateIconPrompt { get => !Name.IsWhiteSpace() && !Description.IsWhiteSpace() && !IsGeneratingIconPrompt; }
     public bool CanGenerateDescription { get => !Name.IsWhiteSpace() && !IsRefiningDescription && !IsGeneratingDescription; }
-    public bool CanGeneratePersonality { get => !Name.IsWhiteSpace() && (!Description.IsWhiteSpace() || !ExampleMessages.IsWhiteSpace()) && !IsRefiningPersonality && !IsGeneratingPersonality; }
+    public bool CanGeneratePersonality { get => !Name.IsWhiteSpace() && !IsRefiningPersonality && !IsGeneratingPersonality; }
     public bool CanGenerateGreeting { get => !Name.IsWhiteSpace() && !IsRefiningGreeting && !IsGeneratingGreeting; }
     public bool CanGenerateTags { get => !Name.IsWhiteSpace() && !Description.IsWhiteSpace() && !IsGeneratingTags; }
 
