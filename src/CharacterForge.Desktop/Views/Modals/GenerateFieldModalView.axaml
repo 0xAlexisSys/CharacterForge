@@ -2,12 +2,12 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:viewModels="using:CharacterForge.Desktop.ViewModels"
              xmlns:icons="using:Material.Icons.Avalonia"
-             x:Class="CharacterForge.Desktop.Views.GenerateGreetingModalView"
-             x:DataType="viewModels:GenerateGreetingModalViewModel">
+             x:Class="CharacterForge.Desktop.Views.GenerateFieldModalView"
+             x:DataType="viewModels:GenerateFieldModalViewModel">
     <StackPanel Classes="modal"
                 Width="480.0">
         <TextBlock Classes="header"
-                   Text="Generate Greeting"/>
+                   Text="{Binding Title}"/>
         <Separator/>
         <StackPanel Orientation="Vertical"
                     Spacing="6.0">
@@ -21,30 +21,35 @@
                                         Background="Transparent"
                                         Padding="2.0"/>
                 </StackPanel>
-                <UniformGrid Rows="2"
-                             Columns="3">
+                <WrapPanel Orientation="Horizontal"
+                           ItemSpacing="12.0">
                     <CheckBox Content="Description"
-                              IsEnabled="{Binding Description.Length}"
+                              IsVisible="{Binding ShowDescriptionCheckBox}"
+                              IsEnabled="{Binding CanIncludeDescription}"
                               IsChecked="{Binding IncludeDescription}"/>
                     <CheckBox Content="Personality"
-                              IsEnabled="{Binding Personality.Length}"
+                              IsVisible="{Binding ShowPersonalityCheckBox}"
+                              IsEnabled="{Binding CanIncludePersonality}"
                               IsChecked="{Binding IncludePersonality}"/>
                     <CheckBox Content="Scenario"
-                              IsEnabled="{Binding Scenario.Length}"
+                              IsVisible="{Binding ShowScenarioCheckBox}"
+                              IsEnabled="{Binding CanIncludeScenario}"
                               IsChecked="{Binding IncludeScenario}"/>
                     <CheckBox Content="Example Messages"
-                              IsEnabled="{Binding ExampleMessages.Length}"
+                              IsVisible="{Binding ShowExampleMessagesCheckBox}"
+                              IsEnabled="{Binding CanIncludeExampleMessages}"
                               IsChecked="{Binding IncludeExampleMessages}"/>
-                </UniformGrid>
+                </WrapPanel>
             </StackPanel>
 
             <StackPanel Classes="field">
                 <StackPanel Classes="header">
                     <TextBlock Classes="label"
                                Text="Prompt"/>
-                    <icons:MaterialIcon Kind="Required"
+                    <icons:MaterialIcon IsVisible="{Binding IsPromptRequired}"
+                                        Kind="Required"
                                         IconSize="20.0"
-                                        Padding="2.0" />
+                                        Padding="2.0"/>
                 </StackPanel>
                 <TextBox Text="{Binding Prompt}"
                          TextWrapping="Wrap"
@@ -62,8 +67,8 @@
                         Command="{Binding CancelCommand}"/>
                 <Button Classes="primary"
                         IsEnabled="{Binding CanGenerate}"
-                        Content="Generate"
-                        Command="{Binding GenerateCommand}"/>
+                        Content="Send"
+                        Command="{Binding RefineCommand}"/>
             </StackPanel>
             <Decorator/>
         </DockPanel>
