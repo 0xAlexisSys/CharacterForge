@@ -280,6 +280,11 @@
             </ItemsPanelTemplate>
         </Setter>
 
+        <Style Selector="^ ScrollViewer">
+            <Setter Property="HorizontalScrollBarVisibility" Value="Disabled"/>
+            <Setter Property="VerticalScrollBarVisibility" Value="Disabled"/>
+        </Style>
+
         <Style Selector="^ ListBoxItem">
             <Setter Property="Padding" Value="8.0 2.0"/>
             <Setter Property="CornerRadius" Value="3.0"/>
