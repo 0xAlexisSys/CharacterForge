@@ -269,16 +269,21 @@
 
     <!-- Segmented / Scope Selector ListBox -->
     <Style Selector="ListBox.segmentSelector">
-        <Setter Property="Background" Value="{DynamicResource AppBackgroundBrush}"/>
-        <Setter Property="BorderBrush" Value="{DynamicResource SurfaceCardBorderBrush}"/>
-        <Setter Property="BorderThickness" Value="1.0"/>
-        <Setter Property="CornerRadius" Value="4.0"/>
-        <Setter Property="Padding" Value="2.0"/>
         <Setter Property="ItemsPanel">
             <ItemsPanelTemplate>
                 <StackPanel Orientation="Horizontal" Spacing="2.0"/>
             </ItemsPanelTemplate>
         </Setter>
+        <Setter Property="Background" Value="{DynamicResource AppBackgroundBrush}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource SurfaceCardBorderBrush}"/>
+        <Setter Property="BorderThickness" Value="1.0"/>
+        <Setter Property="CornerRadius" Value="4.0"/>
+        <Setter Property="Padding" Value="2.0"/>
+
+        <Style Selector="^ ScrollViewer">
+            <Setter Property="HorizontalScrollBarVisibility" Value="Disabled"/>
+            <Setter Property="VerticalScrollBarVisibility" Value="Disabled"/>
+        </Style>
 
         <Style Selector="^ ListBoxItem">
             <Setter Property="Padding" Value="8.0 2.0"/>
