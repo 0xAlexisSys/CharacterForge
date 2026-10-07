@@ -13,7 +13,7 @@ Create concise useful tags for the supplied character card.
 - Description
 - Personality
 - Scenario
-- Example Messages
+- Example Dialogue
 
 ## Example Output
 

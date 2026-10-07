@@ -13,7 +13,7 @@ Write a concise personality block for the supplied character card, guided by the
 - Description
 - Personality
 - Scenario
-- Example Messages
+- Example Dialogue
 
 ## Example Output
 

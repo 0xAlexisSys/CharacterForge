@@ -13,7 +13,7 @@ Write a rich description for the supplied character card, guided by the prompt i
 - Description
 - Personality
 - Scenario
-- Example Messages
+- Example Dialogue
 
 ## Example Output
 

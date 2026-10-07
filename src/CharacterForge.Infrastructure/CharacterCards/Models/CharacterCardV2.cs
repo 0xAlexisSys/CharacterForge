@@ -42,7 +42,7 @@ public sealed record class CharacterCardV2
             Tags = Properties.Tags,
             CreatorName = Properties.CreatorName,
             Version = Properties.Version,
-            ExampleMessages = Properties.ExampleMessages,
+            ExampleDialogue = Properties.ExampleDialogue,
             Extensions = Properties.Extensions,
             SystemPrompt = Properties.SystemPrompt,
             PostHistoryInstructions = Properties.PostHistoryInstructions,
@@ -75,7 +75,7 @@ public sealed record class CharacterCardV2
         public required string FirstGreeting { get; init; }
 
         [JsonPropertyName("mes_example")]
-        public required string ExampleMessages { get; init; }
+        public required string ExampleDialogue { get; init; }
 
         [JsonPropertyName("creator_notes")]
         public required string CreatorNotes { get; init; }

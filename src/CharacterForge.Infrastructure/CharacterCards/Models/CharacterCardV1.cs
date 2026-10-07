@@ -27,7 +27,7 @@ public sealed record class CharacterCardV1
     public required string FirstGreeting { get; init; }
 
     [JsonPropertyName("mes_example")]
-    public required string ExampleMessages { get; init; }
+    public required string ExampleDialogue { get; init; }
 
     /// <summary>
     /// Converts this model to a <see cref="CharacterCardV3"/> representation.
@@ -46,7 +46,7 @@ public sealed record class CharacterCardV1
             Tags = [],
             CreatorName = string.Empty,
             Version = string.Empty,
-            ExampleMessages = ExampleMessages,
+            ExampleDialogue = ExampleDialogue,
             Extensions = new Dictionary<string, JsonElement>(),
             SystemPrompt = string.Empty,
             PostHistoryInstructions = string.Empty,
