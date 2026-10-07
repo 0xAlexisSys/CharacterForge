@@ -6,7 +6,7 @@
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <IsPackable>true</IsPackable>
         <PackageId>CharacterForge.Infrastructure</PackageId>
-        <Version>1.1.1</Version>
+        <Version>1.2.0</Version>
         <Authors>AlxArch010</Authors>
         <PackageReadmeFile>README.md</PackageReadmeFile>
     </PropertyGroup>
