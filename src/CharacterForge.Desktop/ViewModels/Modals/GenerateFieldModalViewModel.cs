@@ -42,13 +42,13 @@ public sealed partial class GenerateFieldModalViewModel : ViewModel
     public partial bool IncludeScenario { get; set; }
 
     [ObservableProperty]
-    public partial bool ShowExampleMessagesCheckBox { get; set; } = true;
+    public partial bool ShowExampleDialogueCheckBox { get; set; } = true;
 
     [ObservableProperty]
-    public partial bool CanIncludeExampleMessages { get; set; }
+    public partial bool CanIncludeExampleDialogue { get; set; }
 
     [ObservableProperty]
-    public partial bool IncludeExampleMessages { get; set; }
+    public partial bool IncludeExampleDialogue { get; set; }
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(CanGenerate))]
@@ -80,8 +80,8 @@ public sealed partial class GenerateFieldModalViewModel : ViewModel
         CanIncludeScenario = !characterCardEditorViewModel.Scenario.IsWhiteSpace();
         IncludeScenario = CanIncludeScenario;
 
-        CanIncludeExampleMessages = !characterCardEditorViewModel.ExampleMessages.IsWhiteSpace();
-        IncludeExampleMessages = CanIncludeExampleMessages;
+        CanIncludeExampleDialogue = !characterCardEditorViewModel.ExampleDialogue.IsWhiteSpace();
+        IncludeExampleDialogue = CanIncludeExampleDialogue;
     }
 
     [RelayCommand]
@@ -92,7 +92,7 @@ public sealed partial class GenerateFieldModalViewModel : ViewModel
             try
             {
                 IsGenerating = true;
-                await StartGeneration.Invoke(Prompt, IncludeDescription, IncludePersonality, IncludeScenario, IncludeExampleMessages);
+                await StartGeneration.Invoke(Prompt, IncludeDescription, IncludePersonality, IncludeScenario, IncludeExampleDialogue);
                 _windowService.HideModal();
             }
             catch (Exception exception)
@@ -124,8 +124,8 @@ public sealed partial class GenerateFieldModalViewModel : ViewModel
         if (!value) IncludeScenario = false;
     }
 
-    partial void OnShowExampleMessagesCheckBoxChanged(bool value)
+    partial void OnShowExampleDialogueCheckBoxChanged(bool value)
     {
-        if (!value) IncludeExampleMessages = false;
+        if (!value) IncludeExampleDialogue = false;
     }
 }

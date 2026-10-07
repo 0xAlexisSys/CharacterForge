@@ -239,11 +239,11 @@
                     <StackPanel Classes="field">
                         <StackPanel Classes="header">
                             <TextBlock Classes="label"
-                                       Text="Example Messages"/>
+                                       Text="Example Dialogue"/>
                             <TextBlock Classes="sublabel"
-                                       Text="{Binding ExampleMessagesTokenCountText}"/>
+                                       Text="{Binding ExampleDialogueTokenCountText}"/>
                         </StackPanel>
-                        <TextBox Text="{Binding ExampleMessages}"
+                        <TextBox Text="{Binding ExampleDialogue}"
                                  TextWrapping="Wrap"
                                  AcceptsReturn="True"
                                  MinLines="11"

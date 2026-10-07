@@ -14,7 +14,7 @@ Refine the supplied character card's greeting (the first message in a new chat w
 - Personality
 - Scenario
 - Greeting
-- Example Messages
+- Example Dialogue
 
 ## Example Output
 

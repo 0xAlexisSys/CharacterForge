@@ -100,9 +100,9 @@ public sealed partial class CharacterCardEditorViewModel : ViewModel
     public partial string CurrentGreeting { get; set; } = string.Empty;
 
     [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(ExampleMessagesTokenCountText))]
+    [NotifyPropertyChangedFor(nameof(ExampleDialogueTokenCountText))]
     [NotifyPropertyChangedFor(nameof(CanGeneratePersonality))]
-    public partial string ExampleMessages { get; set; } = string.Empty;
+    public partial string ExampleDialogue { get; set; } = string.Empty;
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(SystemPromptTokenCountText))]
@@ -180,7 +180,7 @@ public sealed partial class CharacterCardEditorViewModel : ViewModel
         }
     }
 
-    public string ExampleMessagesTokenCountText { get => GetFieldTokenCountText(nameof(ExampleMessages)); }
+    public string ExampleDialogueTokenCountText { get => GetFieldTokenCountText(nameof(ExampleDialogue)); }
     public string SystemPromptTokenCountText { get => GetFieldTokenCountText(nameof(SystemPrompt)); }
     public string PostHistoryInstructionsTokenCountText { get => GetFieldTokenCountText(nameof(PostHistoryInstructions)); }
 
@@ -259,7 +259,7 @@ public sealed partial class CharacterCardEditorViewModel : ViewModel
         [nameof(Description)] = 0,
         [nameof(Personality)] = 0,
         [nameof(Scenario)] = 0,
-        [nameof(ExampleMessages)] = 0,
+        [nameof(ExampleDialogue)] = 0,
         [nameof(SystemPrompt)] = 0,
         [nameof(PostHistoryInstructions)] = 0,
     };
@@ -411,7 +411,7 @@ public sealed partial class CharacterCardEditorViewModel : ViewModel
             foreach (string greeting in characterCardInfo.Model.Properties.AlternateGreetings) AddGreetingItem(0, greeting);
             foreach (string greeting in characterCardInfo.Model.Properties.GroupOnlyGreetings) AddGreetingItem(1, greeting);
             UpdateGreetingProperties();
-            ExampleMessages = characterCardInfo.Model.Properties.ExampleMessages;
+            ExampleDialogue = characterCardInfo.Model.Properties.ExampleDialogue;
 
             SystemPrompt = characterCardInfo.Model.Properties.SystemPrompt;
             PostHistoryInstructions = characterCardInfo.Model.Properties.PostHistoryInstructions;
@@ -491,7 +491,7 @@ public sealed partial class CharacterCardEditorViewModel : ViewModel
                     FirstGreeting = _greetingCategories[0].Items[0].Text,
                     AlternateGreetings = [.._greetingCategories[0].Items.Skip(1).Select(static greeting => greeting.Text)],
                     GroupOnlyGreetings = [.._greetingCategories[1].Items.Select(static greeting => greeting.Text)],
-                    ExampleMessages = ExampleMessages,
+                    ExampleDialogue = ExampleDialogue,
                     SystemPrompt = SystemPrompt,
                     PostHistoryInstructions = PostHistoryInstructions,
                     Tags = [..Tags],
@@ -544,7 +544,7 @@ public sealed partial class CharacterCardEditorViewModel : ViewModel
                 FirstGreeting = _greetingCategories[0].Items.Count != 0 ? _greetingCategories[0].Items[0].Text : string.Empty,
                 AlternateGreetings = [.._greetingCategories[0].Items.Skip(1).Select(static greeting => greeting.Text)],
                 GroupOnlyGreetings = [.._greetingCategories[1].Items.Select(static greeting => greeting.Text)],
-                ExampleMessages = ExampleMessages,
+                ExampleDialogue = ExampleDialogue,
                 SystemPrompt = SystemPrompt,
                 PostHistoryInstructions = PostHistoryInstructions,
                 Tags = [..Tags],
@@ -581,7 +581,7 @@ public sealed partial class CharacterCardEditorViewModel : ViewModel
                 greetingCategory.ItemIndex = 0;
             }
             UpdateGreetingProperties();
-            ExampleMessages = string.Empty;
+            ExampleDialogue = string.Empty;
             SystemPrompt = string.Empty;
             PostHistoryInstructions = string.Empty;
             _lorebook = null;
@@ -603,13 +603,13 @@ public sealed partial class CharacterCardEditorViewModel : ViewModel
     {
         viewModel.Title = "Refine Description";
         viewModel.ShowDescriptionCheckBox = false;
-        viewModel.StartGeneration = (prompt, _, includePersonality, includeScenario, includeExampleMessages) => GenerateTextForFieldAsync("DescriptionRefiner",
+        viewModel.StartGeneration = (prompt, _, includePersonality, includeScenario, includeExampleDialogue) => GenerateTextForFieldAsync("DescriptionRefiner",
                                                                                                                                           prompt,
                                                                                                                                           value => Description = value,
                                                                                                                                           true,
                                                                                                                                           includePersonality,
                                                                                                                                           includeScenario,
-                                                                                                                                          includeExampleMessages,
+                                                                                                                                          includeExampleDialogue,
                                                                                                                                           value => IsRefiningDescription = value);
     });
 
@@ -618,13 +618,13 @@ public sealed partial class CharacterCardEditorViewModel : ViewModel
     {
         viewModel.Title = "Refine Personality";
         viewModel.ShowPersonalityCheckBox = false;
-        viewModel.StartGeneration = (prompt, includeDescription, _, includeScenario, includeExampleMessages) => GenerateTextForFieldAsync("PersonalityRefiner",
+        viewModel.StartGeneration = (prompt, includeDescription, _, includeScenario, includeExampleDialogue) => GenerateTextForFieldAsync("PersonalityRefiner",
                                                                                                                                           prompt,
                                                                                                                                           value => Personality = value,
                                                                                                                                           includeDescription,
                                                                                                                                           true,
                                                                                                                                           includeScenario,
-                                                                                                                                          includeExampleMessages,
+                                                                                                                                          includeExampleDialogue,
                                                                                                                                           value => IsRefiningPersonality = value);
     });
 
@@ -633,13 +633,13 @@ public sealed partial class CharacterCardEditorViewModel : ViewModel
     {
         viewModel.Title = "Refine Scenario";
         viewModel.ShowScenarioCheckBox = false;
-        viewModel.StartGeneration = (prompt, includeDescription, includePersonality, _, includeExampleMessages) => GenerateTextForFieldAsync("ScenarioRefiner",
+        viewModel.StartGeneration = (prompt, includeDescription, includePersonality, _, includeExampleDialogue) => GenerateTextForFieldAsync("ScenarioRefiner",
                                                                                                                                              prompt,
                                                                                                                                              value => Scenario = value,
                                                                                                                                              includeDescription,
                                                                                                                                              includePersonality,
                                                                                                                                              true,
-                                                                                                                                             includeExampleMessages,
+                                                                                                                                             includeExampleDialogue,
                                                                                                                                              value => IsRefiningScenario = value);
     });
 
@@ -647,7 +647,7 @@ public sealed partial class CharacterCardEditorViewModel : ViewModel
     private void OpenRefineGreetingModal() => _windowService.ShowModal<GenerateFieldModalViewModel>(viewModel =>
     {
         viewModel.Title = "Refine Greeting";
-        viewModel.StartGeneration = (prompt, includeDescription, includePersonality, includeScenario, includeExampleMessages) =>
+        viewModel.StartGeneration = (prompt, includeDescription, includePersonality, includeScenario, includeExampleDialogue) =>
         {
             GreetingCategory greetingCategory = _greetingCategories[CurrentGreetingCategoryIndex];
             int greetingItemIndex = greetingCategory.ItemIndex;
@@ -665,7 +665,7 @@ public sealed partial class CharacterCardEditorViewModel : ViewModel
                                              includeDescription,
                                              includePersonality,
                                              includeScenario,
-                                             includeExampleMessages,
+                                             includeExampleDialogue,
                                              value => IsRefiningGreeting = value,
                                              includeGreeting: true);
         };
@@ -679,13 +679,13 @@ public sealed partial class CharacterCardEditorViewModel : ViewModel
     {
         viewModel.Title = "Generate Description";
         viewModel.ShowDescriptionCheckBox = false;
-        viewModel.StartGeneration = (prompt, _, includePersonality, includeScenario, includeExampleMessages) => GenerateTextForFieldAsync("DescriptionWriter",
+        viewModel.StartGeneration = (prompt, _, includePersonality, includeScenario, includeExampleDialogue) => GenerateTextForFieldAsync("DescriptionWriter",
                                                                                                                                           prompt,
                                                                                                                                           value => Description = value,
                                                                                                                                           false,
                                                                                                                                           includePersonality,
                                                                                                                                           includeScenario,
-                                                                                                                                          includeExampleMessages,
+                                                                                                                                          includeExampleDialogue,
                                                                                                                                           value => IsGeneratingDescription = value);
     });
 
@@ -695,13 +695,13 @@ public sealed partial class CharacterCardEditorViewModel : ViewModel
         viewModel.Title = "Generate Personality";
         viewModel.ShowPersonalityCheckBox = false;
         viewModel.IsPromptRequired = false;
-        viewModel.StartGeneration = (prompt, includeDescription, _, includeScenario, includeExampleMessages) => GenerateTextForFieldAsync("PersonalityWriter",
+        viewModel.StartGeneration = (prompt, includeDescription, _, includeScenario, includeExampleDialogue) => GenerateTextForFieldAsync("PersonalityWriter",
                                                                                                                                           prompt,
                                                                                                                                           value => Personality = value,
                                                                                                                                           includeDescription,
                                                                                                                                           false,
                                                                                                                                           includeScenario,
-                                                                                                                                          includeExampleMessages,
+                                                                                                                                          includeExampleDialogue,
                                                                                                                                           value => IsGeneratingPersonality = value);
     });
 
@@ -709,7 +709,7 @@ public sealed partial class CharacterCardEditorViewModel : ViewModel
     private void OpenGenerateGreetingModal() => _windowService.ShowModal<GenerateFieldModalViewModel>(viewModel =>
     {
         viewModel.Title = "Generate Greeting";
-        viewModel.StartGeneration = (prompt, includeDescription, includePersonality, includeScenario, includeExampleMessages) =>
+        viewModel.StartGeneration = (prompt, includeDescription, includePersonality, includeScenario, includeExampleDialogue) =>
         {
             GreetingCategory greetingCategory = _greetingCategories[CurrentGreetingCategoryIndex];
             int greetingItemIndex = greetingCategory.ItemIndex;
@@ -727,7 +727,7 @@ public sealed partial class CharacterCardEditorViewModel : ViewModel
                                              includeDescription,
                                              includePersonality,
                                              includeScenario,
-                                             includeExampleMessages,
+                                             includeExampleDialogue,
                                              value => IsGeneratingGreeting = value);
         };
     });
@@ -805,7 +805,7 @@ public sealed partial class CharacterCardEditorViewModel : ViewModel
                                                                                                                                     Description,
                                                                                                                                     Personality,
                                                                                                                                     Scenario,
-                                                                                                                                    ExampleMessages,
+                                                                                                                                    ExampleDialogue,
                                                                                                                                     null,
                                                                                                                                     null));
 
@@ -841,7 +841,7 @@ public sealed partial class CharacterCardEditorViewModel : ViewModel
         OnPropertyChanged(nameof(PersonalityTokenCountText));
         OnPropertyChanged(nameof(ScenarioTokenCountText));
         OnPropertyChanged(nameof(GreetingTokenCountText));
-        OnPropertyChanged(nameof(ExampleMessagesTokenCountText));
+        OnPropertyChanged(nameof(ExampleDialogueTokenCountText));
         OnPropertyChanged(nameof(SystemPromptTokenCountText));
         OnPropertyChanged(nameof(PostHistoryInstructionsTokenCountText));
     }
@@ -882,7 +882,7 @@ public sealed partial class CharacterCardEditorViewModel : ViewModel
 
     private string GetFieldTokenCountText(string name) => $"{TokenCountTextStart}{_fieldTokenCounts[name]}";
 
-    private async Task GenerateTextForFieldAsync(string systemPromptName, string prompt, Action<string> applyOutput, bool includeDescription, bool includePersonality, bool includeScenario, bool includeExampleMessages, Action<bool> setIsGenerating, bool includeGreeting = false)
+    private async Task GenerateTextForFieldAsync(string systemPromptName, string prompt, Action<string> applyOutput, bool includeDescription, bool includePersonality, bool includeScenario, bool includeExampleDialogue, Action<bool> setIsGenerating, bool includeGreeting = false)
     {
         try
         {
@@ -892,7 +892,7 @@ public sealed partial class CharacterCardEditorViewModel : ViewModel
                                                                                                                                                           includeDescription ? Description : null,
                                                                                                                                                           includePersonality ? Personality : null,
                                                                                                                                                           includeScenario ? Scenario : null,
-                                                                                                                                                          includeExampleMessages ? ExampleMessages : null,
+                                                                                                                                                          includeExampleDialogue ? ExampleDialogue : null,
                                                                                                                                                           includeGreeting ? CurrentGreeting : null,
                                                                                                                                                           prompt));
             Group output = Constants.GeneratedMultiLineTextPattern.Match(assistantPrompt).Groups["Value"];
@@ -951,7 +951,7 @@ public sealed partial class CharacterCardEditorViewModel : ViewModel
         }
     }
 
-    partial void OnExampleMessagesChanged(string value) => _fieldTokenCounts[nameof(ExampleMessages)] = CountTokens(Utilities.ReplaceMacroExampleMessageStart(value), true);
+    partial void OnExampleDialogueChanged(string value) => _fieldTokenCounts[nameof(ExampleDialogue)] = CountTokens(Utilities.ReplaceMacroExampleDialogueStart(value), true);
 
     partial void OnSystemPromptChanged(string value) => _fieldTokenCounts[nameof(SystemPrompt)] = CountTokens(value, true);
 

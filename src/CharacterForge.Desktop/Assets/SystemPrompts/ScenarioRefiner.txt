@@ -13,7 +13,7 @@ Refine the supplied character card's scenario, guided by the prompt.
 - Description
 - Personality
 - Scenario
-- Example Messages
+- Example Dialogue
 
 ## Example Output
 

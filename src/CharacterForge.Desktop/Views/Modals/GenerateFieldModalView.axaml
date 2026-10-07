@@ -35,10 +35,10 @@
                               IsVisible="{Binding ShowScenarioCheckBox}"
                               IsEnabled="{Binding CanIncludeScenario}"
                               IsChecked="{Binding IncludeScenario}"/>
-                    <CheckBox Content="Example Messages"
-                              IsVisible="{Binding ShowExampleMessagesCheckBox}"
-                              IsEnabled="{Binding CanIncludeExampleMessages}"
-                              IsChecked="{Binding IncludeExampleMessages}"/>
+                    <CheckBox Content="Example Dialogue"
+                              IsVisible="{Binding ShowExampleDialogueCheckBox}"
+                              IsEnabled="{Binding CanIncludeExampleDialogue}"
+                              IsChecked="{Binding IncludeExampleDialogue}"/>
                 </WrapPanel>
             </StackPanel>
 

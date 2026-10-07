@@ -44,7 +44,7 @@ public sealed record class CharacterCardV3
         public required string Version { get; init; }
 
         [JsonPropertyName("mes_example")]
-        public required string ExampleMessages { get; init; }
+        public required string ExampleDialogue { get; init; }
 
         [JsonPropertyName("extensions")]
         public required IReadOnlyDictionary<string, JsonElement> Extensions { get; init; }
