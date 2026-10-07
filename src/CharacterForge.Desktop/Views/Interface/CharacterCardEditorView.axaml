@@ -228,7 +228,6 @@
                                         Command="{Binding OpenGenerateGreetingModalCommand}"/>
                             </StackPanel>
                         </UniformGrid>
-
                         <TextBox IsEnabled="{Binding !ShowAddGroupOnlyGreetingPrompt}"
                                  Text="{Binding CurrentGreeting}"
                                  TextWrapping="Wrap"
@@ -256,12 +255,12 @@
             <TabItem Header="Prompt Overrides">
                 <StackPanel Classes="editorTab">
                     <StackPanel Classes="field">
-                        <DockPanel Classes="header">
+                        <StackPanel Classes="header">
                             <TextBlock Classes="label"
                                        Text="System Prompt"/>
                             <TextBlock Classes="sublabel"
                                        Text="{Binding SystemPromptTokenCountText}"/>
-                        </DockPanel>
+                        </StackPanel>
                         <TextBox Text="{Binding SystemPrompt}"
                                  TextWrapping="Wrap"
                                  AcceptsReturn="True"
@@ -270,12 +269,12 @@
                     </StackPanel>
 
                     <StackPanel Classes="field">
-                        <DockPanel Classes="header">
+                        <StackPanel Classes="header">
                             <TextBlock Classes="label"
                                        Text="Post-History Instructions"/>
                             <TextBlock Classes="sublabel"
                                        Text="{Binding PostHistoryInstructionsTokenCountText}"/>
-                        </DockPanel>
+                        </StackPanel>
                         <TextBox Text="{Binding PostHistoryInstructions}"
                                  TextWrapping="Wrap"
                                  AcceptsReturn="True"
@@ -290,18 +289,18 @@
                     <UniformGrid Columns="2"
                                  ColumnSpacing="16.0">
                         <StackPanel Classes="field">
-                            <DockPanel Classes="header">
+                            <StackPanel Classes="header">
                                 <TextBlock Classes="label"
                                            Text="Creator Name"/>
-                            </DockPanel>
+                            </StackPanel>
                             <TextBox Text="{Binding CreatorName}"/>
                         </StackPanel>
 
                         <StackPanel Classes="field">
-                            <DockPanel Classes="header">
+                            <StackPanel Classes="header">
                                 <TextBlock Classes="label"
                                            Text="Version"/>
-                            </DockPanel>
+                            </StackPanel>
                             <TextBox Text="{Binding Version}"/>
                         </StackPanel>
                     </UniformGrid>
