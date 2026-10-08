@@ -595,7 +595,6 @@ public sealed partial class CharacterCardEditorViewModel : ViewModel
 
             _windowService.HideModal();
         };
-        viewModel.OnCancelled = _windowService.HideModal;
     });
 
     [RelayCommand]
@@ -788,7 +787,6 @@ public sealed partial class CharacterCardEditorViewModel : ViewModel
                 UpdateGreetingProperties();
                 _windowService.HideModal();
             };
-            viewModel.OnCancelled = _windowService.HideModal;
         });
     }
 

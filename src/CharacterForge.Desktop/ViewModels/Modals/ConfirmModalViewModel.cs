@@ -1,4 +1,5 @@
 using System;
+using CharacterForge.Desktop.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using JetBrains.Annotations;
@@ -22,6 +23,8 @@ public sealed partial class ConfirmModalViewModel : ViewModel
 
     public Action? OnConfirmed { get; set; }
     public Action? OnCancelled { get; set; }
+
+    public ConfirmModalViewModel(WindowService windowService) => OnCancelled ??= windowService.HideModal;
 
     [RelayCommand]
     private void Confirm() => OnConfirmed?.Invoke();
