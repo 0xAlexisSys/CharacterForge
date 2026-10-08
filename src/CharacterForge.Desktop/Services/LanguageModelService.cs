@@ -9,7 +9,7 @@ using Avalonia.Platform;
 
 namespace CharacterForge.Desktop.Services;
 
-public sealed class FieldGeneratorService(HttpClient httpClient)
+public sealed class LanguageModelService(HttpClient httpClient)
 {
     // TODO: Make endpoint URL configurable.
     private static readonly Uri DefaultEndpoint = new("http://localhost:8080/v1/chat/completions");

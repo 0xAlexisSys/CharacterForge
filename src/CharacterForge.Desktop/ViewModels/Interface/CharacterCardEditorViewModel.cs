@@ -237,7 +237,7 @@ public sealed partial class CharacterCardEditorViewModel : ViewModel
     public bool CanGenerateTags { get => !Name.IsWhiteSpace() && !Description.IsWhiteSpace() && !IsGeneratingTags; }
 
     private readonly Tokenizer _tokenizer;
-    private readonly FieldGeneratorService _fieldGeneratorService;
+    private readonly LanguageModelService _languageModelService;
     private readonly WindowService _windowService;
 
     private readonly ImmutableArray<GreetingCategory> _greetingCategories =
@@ -264,10 +264,10 @@ public sealed partial class CharacterCardEditorViewModel : ViewModel
         [nameof(PostHistoryInstructions)] = 0,
     };
 
-    public CharacterCardEditorViewModel(Tokenizer tokenizer, FieldGeneratorService fieldGeneratorService, WindowService windowService)
+    public CharacterCardEditorViewModel(Tokenizer tokenizer, LanguageModelService languageModelService, WindowService windowService)
     {
         _tokenizer = tokenizer;
-        _fieldGeneratorService = fieldGeneratorService;
+        _languageModelService = languageModelService;
         _windowService = windowService;
 
         CreatorNotesLanguage = CreatorNotesLanguages[0];
@@ -801,7 +801,7 @@ public sealed partial class CharacterCardEditorViewModel : ViewModel
         try
         {
             IsGeneratingTags = true;
-            string output = await _fieldGeneratorService.GenerateAsync("Tagger", "TagArray", Utilities.BuildUserPromptForGeneration(Name,
+            string output = await _languageModelService.GenerateAsync("Tagger", "TagArray", Utilities.BuildUserPromptForGeneration(Name,
                                                                                                                                     Description,
                                                                                                                                     Personality,
                                                                                                                                     Scenario,
@@ -888,7 +888,7 @@ public sealed partial class CharacterCardEditorViewModel : ViewModel
         {
             setIsGenerating.Invoke(true);
 
-            string assistantPrompt = await _fieldGeneratorService.GenerateAsync(systemPromptName, "MultiLineText", Utilities.BuildUserPromptForGeneration(Name,
+            string assistantPrompt = await _languageModelService.GenerateAsync(systemPromptName, "MultiLineText", Utilities.BuildUserPromptForGeneration(Name,
                                                                                                                                                           includeDescription ? Description : null,
                                                                                                                                                           includePersonality ? Personality : null,
                                                                                                                                                           includeScenario ? Scenario : null,

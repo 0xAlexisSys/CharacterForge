@@ -29,7 +29,7 @@ public static class Program
                 .AddSingleton(StrongReferenceMessenger.Default)
                 .AddSingleton(new HttpClient {Timeout = TimeSpan.FromMinutes(3L)})
                 .AddSingleton<Tokenizer>(TiktokenTokenizer.CreateForModel("gpt-5"))
-                .AddSingleton<FieldGeneratorService>()
+                .AddSingleton<LanguageModelService>()
                 .AddSingleton<WindowService>()
                 .AddSingletonViewAndViewModel<MainWindowView, MainWindowViewModel>()
                 .AddSingletonViewAndViewModel<TopbarView, TopbarViewModel>()

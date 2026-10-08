@@ -12,7 +12,7 @@ using JetBrains.Annotations;
 namespace CharacterForge.Desktop.ViewModels;
 
 [UsedImplicitly]
-public sealed partial class GenerateIconPromptModalViewModel(WindowService windowService, FieldGeneratorService fieldGeneratorService, CharacterCardEditorViewModel characterCardEditorViewModel) : ViewModel
+public sealed partial class GenerateIconPromptModalViewModel(WindowService windowService, LanguageModelService languageModelService, CharacterCardEditorViewModel characterCardEditorViewModel) : ViewModel
 {
     [ObservableProperty]
     public partial string Guidance { get; set; } = string.Empty;
@@ -49,7 +49,7 @@ public sealed partial class GenerateIconPromptModalViewModel(WindowService windo
             inputBuilder.AppendTextBlockWithHeader(nameof(CharacterCardEditorViewModel.Description), characterCardEditorViewModel.Description.Trim());
             if (!Guidance.IsWhiteSpace()) inputBuilder.Append($"---\n\n{Guidance.Trim()}");
 
-            Group output = Constants.GeneratedMultiLineTextPattern.Match(await fieldGeneratorService.GenerateAsync("IconPromptWriter", "MultiLineText", inputBuilder.ToString().TrimEnd())).Groups["Value"];
+            Group output = Constants.GeneratedMultiLineTextPattern.Match(await languageModelService.GenerateAsync("IconPromptWriter", "MultiLineText", inputBuilder.ToString().TrimEnd())).Groups["Value"];
             if (!output.Success || output.ValueSpan.IsWhiteSpace()) throw new InvalidOperationException("Response did not contain text.");
             Output = output.Value.Trim();
         }
