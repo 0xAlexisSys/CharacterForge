@@ -68,7 +68,7 @@ public sealed record class CharacterCardV3
         public required string Scenario { get; init; }
 
         [JsonPropertyName("creator_notes")]
-        public required string LegacyCreatorNotes { get; init; }
+        public required string CreatorNote { get; init; }
 
         [JsonPropertyName("character_book")]
         public LorebookV3.CoreProperties? Lorebook { get; init; }

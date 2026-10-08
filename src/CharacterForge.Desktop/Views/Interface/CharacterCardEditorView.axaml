@@ -315,8 +315,8 @@
                                            FontSize="13.0"
                                            Foreground="{DynamicResource ForegroundSecondaryBrush}"
                                            VerticalAlignment="Center"/>
-                                <ComboBox ItemsSource="{Binding CreatorNotesLanguages}"
-                                          SelectedItem="{Binding CreatorNotesLanguage}"
+                                <ComboBox ItemsSource="{Binding CreatorNoteLanguages}"
+                                          SelectedItem="{Binding CreatorNoteLanguage}"
                                           FontSize="12.0"
                                           VerticalAlignment="Center"
                                           MinHeight="24.0"
@@ -331,14 +331,14 @@
                             </StackPanel>
 
                             <TextBlock Classes="label"
-                                       Text="Creator Notes"/>
+                                       Text="Creator's Note"/>
                         </DockPanel>
 
                         <TextBox MinLines="11"
                                  MaxLines="11"
                                  AcceptsReturn="True"
                                  TextWrapping="Wrap"
-                                 Text="{Binding CurrentCreatorNotes}"/>
+                                 Text="{Binding CurrentCreatorNote}"/>
                     </StackPanel>
 
                     <StackPanel Classes="field">

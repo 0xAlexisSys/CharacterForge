@@ -54,7 +54,7 @@ public sealed record class CharacterCardV1
             AlternateGreetings = [],
             Personality = Personality,
             Scenario = Scenario,
-            LegacyCreatorNotes = string.Empty,
+            CreatorNote = string.Empty,
         },
     };
 }

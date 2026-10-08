@@ -119,10 +119,10 @@ public sealed partial class CharacterCardEditorViewModel : ViewModel
     public partial string Version { get; set; } = string.Empty;
 
     [ObservableProperty]
-    public partial LanguageItem CreatorNotesLanguage { get; set; }
+    public partial LanguageItem CreatorNoteLanguage { get; set; }
 
     [ObservableProperty]
-    public partial string CurrentCreatorNotes { get; set; } = string.Empty;
+    public partial string CurrentCreatorNote { get; set; } = string.Empty;
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(CanRefineDescription))]
@@ -193,7 +193,7 @@ public sealed partial class CharacterCardEditorViewModel : ViewModel
         }
     }
 
-    public ImmutableArray<LanguageItem> CreatorNotesLanguages { get => LanguageItem.Languages; }
+    public ImmutableArray<LanguageItem> CreatorNoteLanguages { get => LanguageItem.Languages; }
     public bool IsEditingStandardGreetings { get => CurrentGreetingCategoryIndex == 0; }
     public bool IsEditingGroupOnlyGreetings { get => CurrentGreetingCategoryIndex == 1; }
     public bool ShowAddGroupOnlyGreetingPrompt { get => IsEditingGroupOnlyGreetings && _greetingCategories[1].Items.Count == 0; }
@@ -270,7 +270,7 @@ public sealed partial class CharacterCardEditorViewModel : ViewModel
         _languageModelService = languageModelService;
         _windowService = windowService;
 
-        CreatorNotesLanguage = CreatorNotesLanguages[0];
+        CreatorNoteLanguage = CreatorNoteLanguages[0];
         foreach (GreetingCategory greetingCategory in _greetingCategories.Where(static greetingCategory => greetingCategory.MinOneElement)) greetingCategory.Items.Add(new());
         UpdateGreetingProperties();
     }
@@ -431,8 +431,8 @@ public sealed partial class CharacterCardEditorViewModel : ViewModel
             {
                 foreach (var pair in characterCardInfo.Model.Properties.CreatorNotes) _creatorNotes.Add(pair.Key, pair.Value);
             }
-            if (_creatorNotes.Count == 0 && characterCardInfo.Model.Properties.LegacyCreatorNotes.Length != 0) _creatorNotes.Add(CreatorNotesLanguages[0].Code, characterCardInfo.Model.Properties.LegacyCreatorNotes);
-            LoadCreatorNotesForLanguage(CreatorNotesLanguage.Code);
+            if (_creatorNotes.Count == 0 && characterCardInfo.Model.Properties.CreatorNote.Length != 0) _creatorNotes.Add(CreatorNoteLanguages[0].Code, characterCardInfo.Model.Properties.CreatorNote);
+            LoadCreatorNoteForLanguage(CreatorNoteLanguage.Code);
 
             Tags.Clear();
             foreach (string tag in characterCardInfo.Model.Properties.Tags.Distinct(StringComparer.Ordinal)) Tags.Add(tag.ReplaceLineEndingsWithOneWhiteSpace());
@@ -495,7 +495,7 @@ public sealed partial class CharacterCardEditorViewModel : ViewModel
                     SystemPrompt = SystemPrompt,
                     PostHistoryInstructions = PostHistoryInstructions,
                     Tags = [..Tags],
-                    LegacyCreatorNotes = _creatorNotes.TryGetValue("en", out string? value) ? value : string.Empty,
+                    CreatorNote = _creatorNotes.TryGetValue("en", out string? value) ? value : string.Empty,
                     CreatorNotes = _creatorNotes.Count != 0 ? new Dictionary<string, string>(_creatorNotes) : null,
                     Lorebook = _lorebook,
                     CreationDate = creationDate,
@@ -548,7 +548,7 @@ public sealed partial class CharacterCardEditorViewModel : ViewModel
                 SystemPrompt = SystemPrompt,
                 PostHistoryInstructions = PostHistoryInstructions,
                 Tags = [..Tags],
-                LegacyCreatorNotes = _creatorNotes.TryGetValue("en", out string? value) ? value : string.Empty,
+                CreatorNote = _creatorNotes.TryGetValue("en", out string? value) ? value : string.Empty,
                 CreatorNotes = _creatorNotes.Count != 0 ? new Dictionary<string, string>(_creatorNotes) : null,
                 Lorebook = _lorebook,
                 Extensions = JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(JsonSerializer.Serialize(_extensions)) ?? [],
@@ -589,7 +589,7 @@ public sealed partial class CharacterCardEditorViewModel : ViewModel
             CreatorName = string.Empty;
             Version = string.Empty;
             _creatorNotes.Clear();
-            CurrentCreatorNotes = string.Empty;
+            CurrentCreatorNote = string.Empty;
             Tags.Clear();
             _extensions.Clear();
 
@@ -878,7 +878,7 @@ public sealed partial class CharacterCardEditorViewModel : ViewModel
         OnPropertyChanged(nameof(CanRefineGreeting));
     }
 
-    private void LoadCreatorNotesForLanguage(string languageCode) => CurrentCreatorNotes = _creatorNotes.TryGetValue(languageCode, out string? text) ? text : string.Empty;
+    private void LoadCreatorNoteForLanguage(string languageCode) => CurrentCreatorNote = _creatorNotes.TryGetValue(languageCode, out string? text) ? text : string.Empty;
 
     private string GetFieldTokenCountText(string name) => $"{TokenCountTextStart}{_fieldTokenCounts[name]}";
 
@@ -957,23 +957,23 @@ public sealed partial class CharacterCardEditorViewModel : ViewModel
 
     partial void OnPostHistoryInstructionsChanged(string value) => _fieldTokenCounts[nameof(PostHistoryInstructions)] = CountTokens(value, true);
 
-    partial void OnCreatorNotesLanguageChanged(LanguageItem oldValue, LanguageItem newValue)
+    partial void OnCreatorNoteLanguageChanged(LanguageItem oldValue, LanguageItem newValue)
     {
         // ReSharper disable ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
-        if (oldValue is not null && CurrentCreatorNotes.Length != 0) _creatorNotes[oldValue.Code] = CurrentCreatorNotes;
-        if (newValue is not null) LoadCreatorNotesForLanguage(newValue.Code);
+        if (oldValue is not null && CurrentCreatorNote.Length != 0) _creatorNotes[oldValue.Code] = CurrentCreatorNote;
+        if (newValue is not null) LoadCreatorNoteForLanguage(newValue.Code);
         // ReSharper restore ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
     }
 
-    partial void OnCurrentCreatorNotesChanged(string value)
+    partial void OnCurrentCreatorNoteChanged(string value)
     {
         if (value.Length != 0)
         {
-            _creatorNotes[CreatorNotesLanguage.Code] = value;
+            _creatorNotes[CreatorNoteLanguage.Code] = value;
         }
         else
         {
-            _creatorNotes.Remove(CreatorNotesLanguage.Code);
+            _creatorNotes.Remove(CreatorNoteLanguage.Code);
         }
     }
 }

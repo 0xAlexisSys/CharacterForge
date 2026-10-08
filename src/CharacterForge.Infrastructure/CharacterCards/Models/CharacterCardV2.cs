@@ -51,8 +51,8 @@ public sealed record class CharacterCardV2
             Personality = Properties.Personality,
             Scenario = Properties.Scenario,
             Lorebook = Properties.Lorebook?.ToV3().Properties,
-            LegacyCreatorNotes = Properties.CreatorNotes,
-            CreatorNotes = Properties.CreatorNotes.Length != 0 ? new Dictionary<string, string> {["en"] = Properties.CreatorNotes} : null,
+            CreatorNote = Properties.CreatorNote,
+            CreatorNotes = Properties.CreatorNote.Length != 0 ? new Dictionary<string, string> {["en"] = Properties.CreatorNote} : null,
         },
     };
 
@@ -78,7 +78,7 @@ public sealed record class CharacterCardV2
         public required string ExampleDialogue { get; init; }
 
         [JsonPropertyName("creator_notes")]
-        public required string CreatorNotes { get; init; }
+        public required string CreatorNote { get; init; }
 
         [JsonPropertyName("system_prompt")]
         public required string SystemPrompt { get; init; }
