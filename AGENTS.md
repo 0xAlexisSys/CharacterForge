@@ -1,7 +1,7 @@
 # CharacterForge
 
 CharacterForge is a tool for creating Character Cards for use with language model frontends such as SillyTavern. It is
-developed with .NET 11.0, C# 15.0, and Avalonia 12.1.2.
+developed with .NET 11.0, C# 15.0, and Avalonia 12.1.3.
 
 ## Repository Structure
 
