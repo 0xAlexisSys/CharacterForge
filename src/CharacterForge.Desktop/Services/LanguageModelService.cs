@@ -18,15 +18,15 @@ public sealed class LanguageModelService(HttpClient httpClient)
 
     private static string ReadAsset(string relativePath)
     {
-        using Stream stream = AssetLoader.Open(new($"avares://CharacterForge.Desktop/{relativePath}"));
+        using Stream stream = AssetLoader.Open(new($"avares://CharacterForge.Desktop/Assets/{relativePath}"));
         using StreamReader reader = new(stream);
         return reader.ReadToEnd();
     }
 
     public async Task<string> GenerateAsync(string systemPromptName, string grammarName, string userPrompt, CancellationToken cancellationToken = default)
     {
-        string systemPrompt = ReadAsset($"Assets/SystemPrompts/{systemPromptName}.txt").Trim();
-        string grammar = ReadAsset($"Assets/Grammars/{grammarName}.gbnf");
+        string systemPrompt = ReadAsset($"SystemPrompts/{systemPromptName}.txt").Trim();
+        string grammar = ReadAsset($"Grammars/{grammarName}.gbnf");
 
         // TODO: Make samplers configurable.
         object request = new
