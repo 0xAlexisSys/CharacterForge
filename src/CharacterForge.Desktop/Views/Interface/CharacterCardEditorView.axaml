@@ -236,7 +236,6 @@
                                  MinLines="9"
                                  MaxLines="9"/>
                     </StackPanel>
-
                     <StackPanel Classes="field">
                         <StackPanel Classes="header">
                             <TextBlock Classes="label"
@@ -359,13 +358,14 @@
                             <TextBlock Classes="label"
                                        Text="Tags"/>
                         </DockPanel>
-
                         <Border Background="{DynamicResource TagEditorBackground}"
                                 BorderBrush="{DynamicResource TagEditorBorderBrush}"
                                 BorderThickness="1.0"
                                 CornerRadius="{DynamicResource ControlCornerRadius}"
                                 Padding="4.0">
-                            <controls:TagEditor Items="{Binding Tags}" MaxLines="3" EnsureMaxHeight="True"/>
+                            <controls:TagEditor Items="{Binding Tags}"
+                                                MaxLines="3"
+                                                EnsureMaxHeight="True"/>
                         </Border>
                     </StackPanel>
                 </StackPanel>

@@ -368,7 +368,6 @@
             <Setter Property="Foreground" Value="{DynamicResource ForegroundSecondaryBrush}"/>
         </Style>
 
-
         <Setter Property="UseLayoutRounding" Value="True"/>
         <Setter Property="Width" Value="{DynamicResource NotificationCardWidth}"/>
         <Setter Property="Foreground" Value="{DynamicResource ForegroundPrimaryBrush}"/>
