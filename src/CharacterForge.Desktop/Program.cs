@@ -34,7 +34,6 @@ public static class Program
                 .AddSingletonViewAndViewModel<MainWindowView, MainWindowViewModel>()
                 .AddSingletonViewAndViewModel<TopbarView, TopbarViewModel>()
                 .AddSingletonViewAndViewModel<CharacterCardEditorView, CharacterCardEditorViewModel>()
-                .AddTransientViewAndViewModel<AcceptModalView, AcceptModalViewModel>()
                 .AddTransientViewAndViewModel<ConfirmModalView, ConfirmModalViewModel>()
                 .AddTransientViewAndViewModel<InspectModalView, InspectModalViewModel>()
                 .AddTransientViewAndViewModel<GenerateFieldModalView, GenerateFieldModalViewModel>()
