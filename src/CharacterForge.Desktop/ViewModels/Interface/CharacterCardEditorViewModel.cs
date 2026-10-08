@@ -242,7 +242,7 @@ public sealed partial class CharacterCardEditorViewModel : ViewModel
 
     private readonly ImmutableArray<GreetingCategory> _greetingCategories =
     [
-        new(true, "Are you sure you want to clear all greetings? This will reset the primary greeting and remove all alternate greetings."),
+        new(true, "Are you sure you want to clear all greetings? This will reset the first greeting and remove all alternate greetings."),
         new(false, "Are you sure you want to clear all group-only greetings?"),
     ];
 
