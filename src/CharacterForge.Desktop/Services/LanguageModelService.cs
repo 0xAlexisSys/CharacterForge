@@ -11,6 +11,8 @@ namespace CharacterForge.Desktop.Services;
 
 public sealed class LanguageModelService(HttpClient httpClient)
 {
+    private const int MaxTokens = 4096;
+
     // TODO: Make endpoint URL configurable.
     private static readonly Uri DefaultEndpoint = new("http://localhost:8080/v1/chat/completions");
 
@@ -27,23 +29,29 @@ public sealed class LanguageModelService(HttpClient httpClient)
         string grammar = ReadAsset($"Assets/Grammars/{grammarName}.gbnf");
 
         // TODO: Make samplers configurable.
-        var request = new
+        object request = new
         {
             stream = false,
             messages = new[]
             {
-                new {role = "system", content = systemPrompt},
-                new {role = "user", content = userPrompt},
+                new
+                {
+                    role = "system",
+                    content = systemPrompt,
+                },
+                new
+                {
+                    role = "user",
+                    content = userPrompt,
+                },
             },
-            max_tokens = 4096,
+            max_completion_tokens = MaxTokens,
+            max_tokens = MaxTokens, // Deprecated but some OpenAI-compatible APIs might not know max_completion_tokens.
             temperature = 1.0F,
             top_k = 64,
             top_p = 0.95F,
             min_p = 0.0F,
-            typical_p = 1.0F,
-            top_n_sigma = -1.0F,
             repeat_penalty = 1.0F,
-            repeat_last_n = 360,
             presence_penalty = 0.0F,
             frequency_penalty = 0.0F,
             grammar = grammar,
