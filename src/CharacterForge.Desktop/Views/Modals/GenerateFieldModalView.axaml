@@ -68,7 +68,7 @@
                 <Button Classes="primary"
                         IsEnabled="{Binding CanGenerate}"
                         Content="Send"
-                        Command="{Binding RefineCommand}"/>
+                        Command="{Binding GenerateCommand}"/>
             </StackPanel>
             <Decorator/>
         </DockPanel>

@@ -12,40 +12,25 @@ namespace CharacterForge.Desktop.ViewModels;
 public sealed partial class GenerateFieldModalViewModel : ViewModel
 {
     [ObservableProperty]
-    public partial string Title { get; set; } = "Generate Field";
-
-    [ObservableProperty]
     public partial bool ShowDescriptionCheckBox { get; set; } = true;
-
-    [ObservableProperty]
-    public partial bool CanIncludeDescription { get; set; }
-
-    [ObservableProperty]
-    public partial bool IncludeDescription { get; set; }
 
     [ObservableProperty]
     public partial bool ShowPersonalityCheckBox { get; set; } = true;
 
     [ObservableProperty]
-    public partial bool CanIncludePersonality { get; set; }
-
-    [ObservableProperty]
-    public partial bool IncludePersonality { get; set; }
-
-    [ObservableProperty]
     public partial bool ShowScenarioCheckBox { get; set; } = true;
-
-    [ObservableProperty]
-    public partial bool CanIncludeScenario { get; set; }
-
-    [ObservableProperty]
-    public partial bool IncludeScenario { get; set; }
 
     [ObservableProperty]
     public partial bool ShowExampleDialogueCheckBox { get; set; } = true;
 
     [ObservableProperty]
-    public partial bool CanIncludeExampleDialogue { get; set; }
+    public partial bool IncludeDescription { get; set; }
+
+    [ObservableProperty]
+    public partial bool IncludePersonality { get; set; }
+
+    [ObservableProperty]
+    public partial bool IncludeScenario { get; set; }
 
     [ObservableProperty]
     public partial bool IncludeExampleDialogue { get; set; }
@@ -55,11 +40,15 @@ public sealed partial class GenerateFieldModalViewModel : ViewModel
     public partial string Prompt { get; set; } = string.Empty;
 
     [ObservableProperty]
-    public partial bool IsPromptRequired { get; set; } = true;
-
-    [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(CanGenerate))]
     public partial bool IsGenerating { get; set; } = false;
+
+    public string Title { get; set; } = "Generate Field";
+    public bool CanIncludeDescription { get; set; }
+    public bool CanIncludePersonality { get; set; }
+    public bool CanIncludeScenario { get; set; }
+    public bool CanIncludeExampleDialogue { get; set; }
+    public bool IsPromptRequired { get; set; } = true;
 
     public bool CanGenerate { get => !IsGenerating && (!IsPromptRequired || !Prompt.IsWhiteSpace()); }
 
@@ -85,7 +74,7 @@ public sealed partial class GenerateFieldModalViewModel : ViewModel
     }
 
     [RelayCommand]
-    private async Task Refine()
+    private async Task Generate()
     {
         if (StartGeneration is not null && CanGenerate)
         {

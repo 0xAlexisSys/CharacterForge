@@ -564,7 +564,6 @@ public sealed partial class CharacterCardEditorViewModel : ViewModel
     [RelayCommand]
     private void Reset() => _windowService.ShowModal<ConfirmModalViewModel>(viewModel =>
     {
-        viewModel.Title = "Please Confirm...";
         viewModel.Message = "Reset the character card?";
         viewModel.OnConfirmed = () =>
         {
