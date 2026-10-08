@@ -9,8 +9,6 @@ such as [SillyTavern](https://github.com/SillyTavern/SillyTavern).
 
 - **Multi-format load/save** - Load and save as PNG/APNG, JSON, and CHARX. The icon is preserved in JSON exports as a
   Base64 string.
-- **Multilingual creator notes** - Write creator notes in multiple languages; English also affects the `creator_notes`
-  property from Character Card V2.
 - **Live token estimations** - Prompt-relevant fields show an estimated token count in real time, using OpenAI's
   *o200k_base* tokenizer and supporting a subset of macros.
   - Tokenized macros: `{{user}}`, `{{char}}`, `{{// A}}`, `{{hidden_key:A}}`, `{{comment:A}}`, `{{reverse:A}}`
