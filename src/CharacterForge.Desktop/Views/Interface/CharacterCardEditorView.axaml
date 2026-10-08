@@ -292,7 +292,7 @@
                         <StackPanel Classes="field">
                             <StackPanel Classes="header">
                                 <TextBlock Classes="label"
-                                           Text="Creator Name"/>
+                                           Text="Creator's Name"/>
                             </StackPanel>
                             <TextBox Text="{Binding CreatorName}"/>
                         </StackPanel>
